@@ -26,10 +26,14 @@ An instruction word can be divided into the following fields:
 
 - **Source register arguments (ARG1, ARG2)**. Specifies which registers to reference. The values stored in these registers will be used in evaluation of the instruction.
 
-- **Destination register (ARGD)**. Specifies where to store the result of the operation after it has completed.
+- **Destination register (ARGD)**. Specifies which register to store the result of the operation after it has completed.
 
 - **Immediate value (IMM)**. A number used in some types of instructions instead of a secondary register argument. The value given in the instruction will be directly used in the evaluation of the instruction.
 
 - **Secondary opcode (OP2)**. Signals the processor what instruction to perform. Primarily used in non-immediate ALU instructions, where the secondary opcode is used to specify the `ALUop` signal (see below).
 
+An instruction word can take one of two formats:
 
+<b style="font-color:#ff0000">xxxxx</b><b style="font-color:#6699ff">xxxxx</b><b style="font-color:#66ccff">xxxxx</b><b style="font-color:#0000ff>xxxxx</b><b style="font-color:#66ff00">0000000</b><b style="font-color:#800000">xxxxx</b>
+
+<b style="font-color:#ff0000">OP1</b> <b style="font-color:#6699ff">ARG1</b> <b style="font-color:#66ccff">ARG2</b> <b style="font-color:#0000ff>ARGD</b> <i style="font-color:#66ff00">empty</i> <b style="font-color:#800000">OP2</b>
