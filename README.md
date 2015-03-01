@@ -34,6 +34,6 @@ An instruction word can be divided into the following fields:
 
 An instruction word can take one of two formats:
 
-<b style="font-color:#ff0000">xxxxx</b><b style="font-color:#6699ff">xxxxx</b><b style="font-color:#66ccff">xxxxx</b><b style="font-color:#0000ff>xxxxx</b><b style="font-color:#66ff00">0000000</b><b style="font-color:#800000">xxxxx</b>
-
-<font color="#ff0000">OP1</font> <b style="font-color:#6699ff">ARG1</b> <b style="font-color:#66ccff">ARG2</b> <b style="font-color:#0000ff>ARGD</b> <i style="font-color:#66ff00">empty</i> <b style="font-color:#800000">OP2</b>
+|OP1  |ARG1 |ARG2 |ARGD |*empty*|  OP2|
+|:---:|:---:|:---:|:---:|:-----:|:---:|
+|xxxxx|xxxxx|xxxxx|xxxxx|0000000|xxxxx|
