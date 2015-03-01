@@ -34,6 +34,7 @@ An instruction word can be divided into the following fields:
 
 An instruction word can take one of two formats:
 
-|OP1  |ARG1 |ARG2 |ARGD |*empty*|  OP2|
+| OP1 |ARG1 |ARG2 |ARGD |*empty*| OP2 |
 |:---:|:---:|:---:|:---:|:-----:|:---:|
 |xxxxx|xxxxx|xxxxx|xxxxx|0000000|xxxxx|
+|31-27|26-22|21-17|16-12|  11-5 | 4-0 |
