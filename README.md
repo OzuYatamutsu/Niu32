@@ -34,7 +34,7 @@ An instruction word can be divided into the following fields:
 
 An instruction word can take one of two formats. Fields are shown at the top, and the bits they correspond to are shown at the bottom. Bit ranges are *inclusive* (i.e. "bits 4-0" *include both bit 4 and bit 0*).
 
-**Non-immediate**:
+#### Non-immediate
 
 | OP1 |ARG1 |ARG2 |ARGD |*empty*| OP2 |
 |:---:|:---:|:---:|:---:|:-----:|:---:|
@@ -43,7 +43,7 @@ An instruction word can take one of two formats. Fields are shown at the top, an
 
 These are used for **instructions which require the use of two argument registers** and/or **instructions which require a secondary opcode**.
 
-**Immediate**:
+#### Immediate
 
 | OP1 |ARG1 |ARGD |       IMM       | 
 |:---:|:---:|:---:|:---------------:|
