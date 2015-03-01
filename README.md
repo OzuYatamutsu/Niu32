@@ -32,7 +32,7 @@ An instruction word can be divided into the following fields:
 
 - **Secondary opcode (OP2)**. Signals the processor what instruction to perform. Primarily used in non-immediate ALU instructions, where the secondary opcode is used to specify the `ALUop` signal (see below).
 
-An instruction word can take one of two formats:
+An instruction word can take one of two formats. Fields are shown at the top, and the bits they correspond to are shown at the bottom. Bit ranges are *inclusive* (i.e. "bits 4-0" *include both bit 4 and bit 0*)
 
 **Non-immediate**:
 
@@ -40,4 +40,3 @@ An instruction word can take one of two formats:
 |:---:|:---:|:---:|:---:|:-----:|:---:|
 |xxxxx|xxxxx|xxxxx|xxxxx|0000000|xxxxx|
 |31-27|26-22|21-17|16-12|  11-5 | 4-0 |
-|               **Bits**              |
