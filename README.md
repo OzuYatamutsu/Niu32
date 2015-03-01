@@ -18,7 +18,7 @@ Although not a valid register in our instruction set, we will refer to instructi
 
 ## Instruction word format
 
-An instruction word in Niu32 is 32 bits long. We will start counting from **bit 0** (most-significant) to **bit 31** (least-significant).
+An instruction word in Niu32 is 32 bits long. We will start counting from **bit 31** (most-significant) to **bit 0** (least-significant).
 
 An instruction word can be divided into the following fields:
 
