@@ -22,17 +22,17 @@ An instruction word in Niu32 is 32 bits long. We will start counting from **bit 
 
 An instruction word can be divided into the following fields:
 
-- **Primary opcode (OP1)**. Signals the processor what instruction to perform, or alternatively signals the processor to check the **secondary opcode** to figure out what instruction to perform.
+- **Primary opcode (OP1)**. *5 bits*. Signals the processor what instruction to perform, or alternatively signals the processor to check the **secondary opcode** to figure out what instruction to perform.
 
-- **Source register arguments (ARG1, ARG2)**. Specifies which registers to reference. The values stored in these registers will be used in evaluation of the instruction.
+- **Source register arguments (ARG1, ARG2)**. *5 bits each*.  Specifies which registers to reference. The values stored in these registers will be used in evaluation of the instruction.
 
-- **Destination register (ARGD)**. Specifies which register to store the result of the operation after it has completed.
+- **Destination register (ARGD)**. *5 bits*. Specifies which register to store the result of the operation after it has completed.
 
-- **Immediate value (IMM)**. A number used in some types of instructions instead of a secondary register argument. The value given in the instruction will be directly used in the evaluation of the instruction.
+- **Immediate value (IMM)**. *17 bits*. A number used in some types of instructions instead of a secondary register argument. The value given in the instruction will be directly used in the evaluation of the instruction.
 
-- **Secondary opcode (OP2)**. Signals the processor what instruction to perform. Primarily used in non-immediate ALU instructions, where the secondary opcode is used to specify the `ALUop` signal (see below).
+- **Secondary opcode (OP2)**. *5 bits*. Signals the processor what instruction to perform. Primarily used in non-immediate ALU instructions, where the secondary opcode is used to specify the `ALUop` signal (see below).
 
-An instruction word can take one of two formats. Fields are shown at the top, and the bits they correspond to are shown at the bottom. Bit ranges are *inclusive* (i.e. "bits 4-0" *include both bit 4 and bit 0*)
+An instruction word can take one of two formats. Fields are shown at the top, and the bits they correspond to are shown at the bottom. Bit ranges are *inclusive* (i.e. "bits 4-0" *include both bit 4 and bit 0*).
 
 **Non-immediate**:
 
@@ -41,9 +41,13 @@ An instruction word can take one of two formats. Fields are shown at the top, an
 |xxxxx|xxxxx|xxxxx|xxxxx|0000000|xxxxx|
 |31-27|26-22|21-17|16-12|  11-5 | 4-0 |
 
+These are used for **instructions which require the use of two argument registers** and/or **instructions which require a secondary opcode**.
+
 **Immediate**:
 
 | OP1 |ARG1 |ARGD |       IMM       | 
 |:---:|:---:|:---:|:---------------:|
 |xxxxx|xxxxx|xxxxx|xxxxxxxxxxxxxxxxx|
 |31-27|26-22|21-17|       16-0      |
+
+These are used for **instructions which require the use of an immediate value**.
