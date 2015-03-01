@@ -18,4 +18,18 @@ Although not a valid register in our instruction set, we will refer to instructi
 
 ## Instruction word format
 
-An instruction word in Niu32 is 32 bits long.
+An instruction word in Niu32 is 32 bits long. We will start counting from **bit 0** (most-significant) to **bit 31** (least-significant).
+
+An instruction word can be divided into the following fields:
+
+- **Primary opcode (OP1)**. Signals the processor what instruction to perform, or alternatively signals the processor to check the **secondary opcode** to figure out what instruction to perform.
+
+- **Source register arguments (ARG1, ARG2)**. Specifies which registers to reference. The values stored in these registers will be used in evaluation of the instruction.
+
+- **Destination register (ARGD)**. Specifies where to store the result of the operation after it has completed.
+
+- **Immediate value (IMM)**. A number used in some types of instructions instead of a secondary register argument. The value given in the instruction will be directly used in the evaluation of the instruction.
+
+- **Secondary opcode (OP2)**. Signals the processor what instruction to perform. Primarily used in non-immediate ALU instructions, where the secondary opcode is used to specify the `ALUop` signal (see below).
+
+
