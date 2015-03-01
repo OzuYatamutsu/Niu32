@@ -40,3 +40,10 @@ An instruction word can take one of two formats. Fields are shown at the top, an
 |:---:|:---:|:---:|:---:|:-----:|:---:|
 |xxxxx|xxxxx|xxxxx|xxxxx|0000000|xxxxx|
 |31-27|26-22|21-17|16-12|  11-5 | 4-0 |
+
+**Immediate**:
+
+| OP1 |ARG1 |ARGD |       IMM       | 
+|:---:|:---:|:---:|:---------------:|
+|xxxxx|xxxxx|xxxxx|xxxxxxxxxxxxxxxxx|
+|31-27|26-22|21-17|       16-0      |
