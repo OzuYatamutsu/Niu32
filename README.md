@@ -95,6 +95,23 @@ Niu32 has **32** addressable registers.
 
 #### Primary
 
+`ADD $argD, $arg1, $arg2`
+** $argD <- $arg1 + $arg2 **
+Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
+
+`SUB $argD, $arg1, $arg2`
+** $argD <- $arg1 - $arg2 **
+Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
+
 #### Secondary
 
+
+
 ## Assembler
+
+#### Pseudo-ops
+
+`SUBI $argD, $arg1, imm`
+** $argD <- $arg1 - imm **
+Subtracts `imm` from `$arg1`, and stores the result in `$argD`.
+The assembler will negate `imm` and transform this into an `ADDI` instruction.
