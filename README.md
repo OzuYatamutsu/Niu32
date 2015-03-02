@@ -144,21 +144,34 @@ Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 **$argD <- $arg1 & $arg2**    <br>
 Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
+##### NOT
+
+##### XOR
+
 ## Assembler
 
 #### Pseudo-ops
 
+##### SUBI
 `SUBI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 - imm**      <br>
 Subtracts `imm` from `$arg1`, and stores the result in `$argD`. <br>
 The assembler will negate `imm` and transform this into an `ADDI` instruction.
 
+##### GT
 `GT $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 > $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **greater than** `$arg2`; otherwise stores a **0**. <br>
 The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `LT` instruction.
 
+##### GEQ
 `GEQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 >= $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **greater than or equal to** `$arg2`; otherwise stores a **0**. <br>
 The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `LEQ` instruction.
+
+##### NAND
+
+##### NOR
+
+##### NXOR
