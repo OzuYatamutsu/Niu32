@@ -141,12 +141,20 @@ Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ##### OR
 `OR $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 & $arg2**    <br>
-Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
+**$argD <- $arg1 | $arg2**    <br>
+Performs a bitwise OR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ##### NOT
 
+`NOT $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 ~ $arg2**    <br>
+Performs a bitwise NOT on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
 ##### XOR
+
+`XOR $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 ^ $arg2**    <br>
+Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ## Assembler
 
