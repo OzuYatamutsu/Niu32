@@ -95,36 +95,51 @@ Niu32 has **32** addressable registers.
 
 #### Primary
 
+##### ADDI
 `ADDI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 + imm**        <br>
 Adds `imm` to `$arg1`, and stores the result in `$argD`.
 
+##### ALUI
+Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
+This *should not be written directly in an assembly program*, and the assembler will throw an error if encountered!
+
 #### Secondary
 
+These instructions are encoded in the **OP2** instruction word field (see above). 
+They will be executed if the **OP1** instruction word field is set to **ALUI** (`00000`).
+
+##### ADD
 `ADD $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 + $arg2**    <br>
 Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
 
+##### SUB
 `SUB $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 - $arg2**    <br>
 Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
 
+##### EQ
 `EQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 == $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **equal to** `$arg2`; otherwise stores a **0**.
 
+##### LT
 `LT $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 < $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **equal to** `$arg2`; otherwise stores a **0**.
 
+##### LEQ
 `LEQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 <= $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg2`; otherwise stores a **0**.
 
+##### AND
 `AND $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 & $arg2**    <br>
 Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
+##### OR
 `OR $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 & $arg2**    <br>
 Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
