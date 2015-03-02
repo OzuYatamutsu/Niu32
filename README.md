@@ -60,9 +60,9 @@ Niu32 has **32** addressable registers.
 |:------:|:----:|:------:|:---------------:|
 |R0|$zero|00000|A read-only register that will only hold a value of **0**.
 |R1|$a0|00001|**Argument register 0**. *Caller pushed*. Used for passing arguments to subroutines in an assembly program.
-|R2|$a1|00010|**Argument register 1**. *Caller pushed*.Used for passing arguments to subroutines in an assembly program.
-|R3|$a2|00011|**Argument register 2**. *Caller pushed*.Used for passing arguments to subroutines in an assembly program.
-|R4|$a3|00100|**Argument register 3**. *Caller pushed*.Used for passing arguments to subroutines in an assembly program.
+|R2|$a1|00010|**Argument register 1**. *Caller pushed*. Used for passing arguments to subroutines in an assembly program.
+|R3|$a2|00011|**Argument register 2**. *Caller pushed*. Used for passing arguments to subroutines in an assembly program.
+|R4|$a3|00100|**Argument register 3**. *Caller pushed*. Used for passing arguments to subroutines in an assembly program.
 |R5|$t0|00101|**Temporary register 0**. *Caller saved*. Used to hold a temporary value.
 |R6|$t1|00110|**Temporary register 1**. *Caller saved*. Used to hold a temporary value.
 |R7|$t2|00111|**Temporary register 2**. *Caller saved*. Used to hold a temporary value.
