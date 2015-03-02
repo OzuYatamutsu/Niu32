@@ -95,6 +95,12 @@ Niu32 has **32** addressable registers.
 
 #### Primary
 
+`ADDI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 + imm**        <br>
+Adds `imm` to `$arg1`, and stores the result in `$argD`.
+
+#### Secondary
+
 `ADD $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 + $arg2**    <br>
 Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
@@ -103,9 +109,25 @@ Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
 **$argD <- $arg1 - $arg2**    <br>
 Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
 
-#### Secondary
+`EQ $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 == $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **equal to** `$arg2`; otherwise stores a **0**.
 
+`LT $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 < $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **equal to** `$arg2`; otherwise stores a **0**.
 
+`LEQ $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 <= $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg2`; otherwise stores a **0**.
+
+`AND $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 & $arg2**    <br>
+Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
+`OR $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 & $arg2**    <br>
+Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ## Assembler
 
@@ -113,5 +135,15 @@ Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
 
 `SUBI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 - imm**      <br>
-Subtracts `imm` from `$arg1`, and stores the result in `$argD`.
+Subtracts `imm` from `$arg1`, and stores the result in `$argD`. <br>
 The assembler will negate `imm` and transform this into an `ADDI` instruction.
+
+`GT $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 > $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **greater than** `$arg2`; otherwise stores a **0**. <br>
+The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `LT` instruction.
+
+`GEQ $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 >= $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **greater than or equal to** `$arg2`; otherwise stores a **0**. <br>
+The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `LEQ` instruction.
