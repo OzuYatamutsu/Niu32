@@ -83,7 +83,7 @@ Niu32 has **32** addressable registers.
 |R22|$r1|10110|**Return value 1**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
 |R23|$r2|10111|**Return value 2**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
 |R24|$r3|11000|**Return value 3**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
-|R25|11001|**Return address**. *Callee saved*. Used to hold the return address of the calling routine.
+|R25|$ra|11001|**Return address**. *Callee saved*. Used to hold the return address of the calling routine.
 |R26|$gp|11010|**Global pointer**. Used to point to global variables.
 |R27|$fp|11011|**Frame pointer**. Used to hold the memory location of the current stack frame.
 |R28|$sp|11100|**Stack pointer**. Used to hold the memory location of the next empty position on the stack.
@@ -91,8 +91,9 @@ Niu32 has **32** addressable registers.
 |R30|$k0|11110|**Kernel register 0**. Reserved for kernel use (for example, during interrupt handling).
 |R31|$k1|11111|**Kernel register 1**. Reserved for kernel use (for example, during interrupt handling).
 
+## Memory
+
 ## Opcodes
 
-## Memory
 
 ## Assembler
