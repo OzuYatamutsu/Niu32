@@ -272,18 +272,42 @@ Performs a NXOR on `$arg1` and `$arg2` and stores the result in `$argD`.<br>
 The assembler will expand this into two seperate `XOR` and `NOT` instructions.
 
 ##### CPY
+`CPY $argD, $arg1`       <br>
+**$argD <- $arg1**    <br>
+Copies the value stored in `$arg1` into `$argD`.<br>
+The assembler will transform this into an `ADD` instruction.
 
 ##### LI
 
 ##### CLR
+`CLR $argD`       <br>
+**$argD <- $zero**    <br>
+Clears (zeroes-out) the contents of `$argD`.<br>
+The assembler will transform this into an `ADD` instruction.
 
 ##### BGT
+`BGT $arg1, $arg2, imm`        <br>
+**$arg1 > $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **greater than** `$arg2`; otherwise, advances to the next instruction. <br>
+The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `BLT` instruction.
 
 ##### BGE
+`BGE $arg1, $arg2, imm`        <br>
+**$arg1 >= $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **greater than or equal to** `$arg2`; otherwise, advances to the next instruction. <br>
+The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `BLE` instruction.
 
 ##### GOTO
+`GOTO imm`        <br>
+**PC <- 4*imm**        <br>
+Unconditionally branches to `imm`. <br>
+The assembler will transform this into a `BEQ` instruction.
 
 ##### JMP
+`JMP $argD`        <br>
+**$ra <- (PC + 4), PC <- $argD** <br>
+Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$ra`.
+The assembler will transform this into a `JAL` instruction.
 
 ##### RET
 
