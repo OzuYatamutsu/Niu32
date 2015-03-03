@@ -80,7 +80,7 @@ Niu32 has **32** addressable registers.
 |R19|$s6|10011|**Saved register 6**. *Callee saved*. Used to hold a temporary/saved value.
 |R20|$s7|10100|**Saved register 7**. *Callee saved*. Used to hold a temporary/saved value.
 |R21|$r0|10101|**Return value 0**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
-|R22|$r1|10110|**Return value 1**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
+|R22|$r1|10110|**Return value 1**. Used to hold a single return value from a subroutine (instead of pushing onto the steak).
 |R23|$r2|10111|**Return value 2**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
 |R24|$r3|11000|**Return value 3**. Used to hold a single return value from a subroutine (instead of pushing onto the stack).
 |R25|$ra|11001|**Return address**. *Callee saved*. Used to hold the return address of the calling routine.
