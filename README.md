@@ -100,25 +100,60 @@ Niu32 has **32** addressable registers.
 **$argD <- $arg1 + imm**        <br>
 Adds `imm` to `$arg1`, and stores the result in `$argD`.
 
-##### LW
+##### SUL
+`SUL $argD, $arg1, imm`        <br>
+**$argD <- $arg1 << imm**        <br>
+Unsigned left-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
-##### LB
+##### SUR
+`SUR $argD, $arg1, imm`        <br>
+**$argD <- $arg1 >> imm**        <br>
+Unsigned right-shifts `$arg1` by `imm` and stores the result in `$argD`.
+
+##### SSL
+`SSL $argD, $arg1, imm`        <br>
+**$argD <- $arg1 <<< imm**        <br>
+Signed left-shifts `$arg1` by `imm` and stores the result in `$argD`.
+
+##### SSR
+`SSR $argD, $arg1, imm`        <br>
+**$argD <- $arg1 >>> imm**        <br>
+Signed right-shifts `$arg1` by `imm` and stores the result in `$argD`.
+
+##### LW
+`LW $argD, $arg1, imm`          <br>
+**$argD <- Mem[$arg1 + 4*imm]**       <br>
+Loads the word at the memory location computed by adding `$arg1` and `imm` into `$argD`.
 
 ##### SW
-
-##### SB
-
-##### SFTL
-
-##### SFTR
+`LW $arg1, $arg2, imm`          <br>
+**Mem[$arg2 + 4*imm] <- $arg1**       <br>
+Stores the word in `$arg1` at the memory location computed by adding `$arg1` and `imm` into `$argD`.
 
 ##### BEQ
+`BEQ $arg1, $arg2, imm`        <br>
+**$arg1 == $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **equal to** `$arg2`; otherwise, advances to the next instruction.
+
+##### BLT
+`BLT $arg1, $arg2, imm`        <br>
+**$arg1 < $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **less than** `$arg2`; otherwise, advances to the next instruction.
 
 ##### BLE
+`BLE $arg1, $arg2, imm`        <br>
+**$arg1 <= $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **less than or equal to** `$arg2`; otherwise, advances to the next instruction.
 
 ##### BNE
+`BNE $arg1, $arg2, imm`        <br>
+**$arg1 != $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **not equal to** `$arg2`; else, advances to the next instruction.
 
 ##### JAL
+`JAL $argD, $arg1`        <br>
+**$argD <- (PC + 4), PC <- $arg1**        <br>
+Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$argD`.
 
 ##### ALUI
 Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
@@ -142,7 +177,6 @@ Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
 ##### MULT
 
 ##### DIV
-
 
 ##### EQ
 `EQ $argD, $arg1, $arg2`       <br>
@@ -223,9 +257,15 @@ The assembler will swap the order of `$arg1` and `$arg2` and transform this into
 
 ##### BGE
 
+##### GOTO
+
 ##### JMP
 
 ##### RET
+
+##### STOR
+
+##### LOAD
 
 ##### PUSH
 
