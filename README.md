@@ -100,6 +100,16 @@ Niu32 has **32** addressable registers.
 **$argD <- $arg1 + imm**        <br>
 Adds `imm` to `$arg1`, and stores the result in `$argD`.
 
+##### MLTI
+`MLTI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 / imm**        <br>
+Multiplies `$arg1` by `imm` and stores the result in `$argD`.
+
+##### DIVI
+`DIVI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 / imm**        <br>
+Divides `$arg1` by `imm` and stores the result in `$argD`.
+
 ##### SUL
 `SUL $argD, $arg1, imm`        <br>
 **$argD <- $arg1 << imm**        <br>
@@ -174,9 +184,15 @@ Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
 **$argD <- $arg1 - $arg2**    <br>
 Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
 
-##### MULT
+##### MLT
+`MLT $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 * $arg2**        <br>
+Multiplies `$arg1` by `$arg2` and stores the result in `$argD`.
 
 ##### DIV
+`DIV $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 / $arg2**        <br>
+Divides `$arg1` by `$arg2` and stores the result in `$argD`.
 
 ##### EQ
 `EQ $argD, $arg1, $arg2`       <br>
@@ -225,10 +241,6 @@ Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 Subtracts `imm` from `$arg1`, and stores the result in `$argD`. <br>
 The assembler will negate `imm` and transform this into an `ADDI` instruction.
 
-##### MULTI
-
-##### DIVI
-
 ##### GT
 `GT $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 > $arg2) ? 1 : 0**    <br>
@@ -242,10 +254,22 @@ Stores a value of **1** in `$argD` if `$arg1` is **greater than or equal to** `$
 The assembler will swap the order of `$arg1` and `$arg2` and transform this into a `LEQ` instruction.
 
 ##### NAND
+`NAND $argD, $arg1, $arg2`       <br>
+**$argD <- ~($arg1 & $arg2)**    <br>
+Performs a NAND on `$arg1` and `$arg2` and stores the result in `$argD`.<br>
+The assembler will expand this into two seperate `AND` and `NOT` instructions.
 
 ##### NOR
+`NOR $argD, $arg1, $arg2`       <br>
+**$argD <- ~($arg1 | $arg2)**    <br>
+Performs a NOR on `$arg1` and `$arg2` and stores the result in `$argD`.<br>
+The assembler will expand this into two seperate `OR` and `NOT` instructions.
 
 ##### NXOR
+`NXOR $argD, $arg1, $arg2`       <br>
+**$argD <- ~($arg1 ^ $arg2)**    <br>
+Performs a NXOR on `$arg1` and `$arg2` and stores the result in `$argD`.<br>
+The assembler will expand this into two seperate `XOR` and `NOT` instructions.
 
 ##### CPY
 
