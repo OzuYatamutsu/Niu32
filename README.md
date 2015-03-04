@@ -320,13 +320,13 @@ The assembler will transform this into a `JAL` instruction.
 ##### LOAD
 
 ##### PUSH
-`PUSH $arg1`
-**Mem[$sp] <- $arg1, $sp - WORD_SIZE**
+`PUSH $arg1`    <br>
+**Mem[$sp] <- $arg1, $sp - WORD_SIZE**  <br>
 Pushes the word value of `$arg1` onto the stack, and grows the stack pointer (moves up in memory). <br>
 The assembler will expand this into `SW` and `ADDI` instructions.
 
 ##### POP
-`POP $argD`
-**$sp + WORD_SIZE, $arg1 <- Mem[$sp]**
+`POP $argD` <br>
+**$sp + WORD_SIZE, $arg1 <- Mem[$sp]**  <br>
 Shrinks the stack pointer (moves down in memory) and pops the word value at the stack pointer into `$argD`. <br>
 The assembler will expand this into `LW` and `ADDI` instructions.
