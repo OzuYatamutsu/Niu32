@@ -124,10 +124,10 @@ Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|00|[ALUI](#ALUI)|[ADDI](#ADDI)|[MLTI](#MLTI)|[DIVI](#DIVI)|[ANDI](#ANDI)|[ORI](#ORI)|
-|01|SUL |SSL |SUR |SSR |
-|10|LW  |LB  |SW  |SB  |LUI |
-|11|BEQ |BNE |BLT |BLE |    |    |    |JAL |
+|00|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)|[ANDI](#andi)|[ORI](#ori)|
+|01|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
+|10|[LW](#lw)|[LB](#lb)|[SW](#sw)|[SB](#sb)|[LUI](#lui)|
+|11|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
 
 ##### ALUI
 Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
