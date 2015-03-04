@@ -93,6 +93,25 @@ Niu32 has **32** addressable registers.
 
 ## Memory
 
+Niu32's memory is **byte** and **word-addressable**. The size of a memory word is **32 bits (4 bytes)**, so any implementation of a Niu32 ISA must reserve 2 bits to select a single byte at a given memory location.
+
+|Selection bits|Select|
+|:------------:|:----:|
+|00|Byte 1|
+|01|Byte 2|
+|10|Byte 3|
+|11|Byte 4|
+
+For example, a memory can look like the following (with 15 bits of addressability + 2 bits byte selector):
+
+|Location|Byte 1 (+0)|Byte 2 (+1)|Byte 3 (+2)|Byte 4 (+3)|
+|:------:|:----:|:----:|:----:|:----:|
+|0x0000|0xDE|0xAD|0xBE|0xEF|
+|0x0004|0xAB|0xBC|0xCD|0xDE|
+|0x0008|0xB0|0x0B|0x55|0x66|
+|...|...|...|...|...|
+|0x7FFF|0xFF|0xCC|0xBB|0xAA|
+
 ## Opcodes
 
 #### Primary
