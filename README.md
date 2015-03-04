@@ -306,15 +306,27 @@ The assembler will transform this into a `BEQ` instruction.
 ##### JMP
 `JMP $argD`        <br>
 **$ra <- (PC + 4), PC <- $argD** <br>
-Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$ra`.
+Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$ra`. <br>
 The assembler will transform this into a `JAL` instruction.
 
 ##### RET
+`RET`
+**PC <- $ra**
+Returns the PC to the memory location stored in the `$ra` (return address) register. <br>
+The assembler will transform this into a `JAL` instruction.
 
 ##### STOR
 
 ##### LOAD
 
 ##### PUSH
+`PUSH $arg1`
+**Mem[$sp] <- $arg1, $sp - WORD_SIZE**
+Pushes the word value of `$arg1` onto the stack, and grows the stack pointer (moves up in memory). <br>
+The assembler will expand this into `SW` and `ADDI` instructions.
 
 ##### POP
+`POP $argD`
+**$sp + WORD_SIZE, $arg1 <- Mem[$sp]**
+Shrinks the stack pointer (moves down in memory) and pops the word value at the stack pointer into `$argD`. <br>
+The assembler will expand this into `LW` and `ADDI` instructions.
