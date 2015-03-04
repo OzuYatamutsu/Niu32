@@ -124,10 +124,14 @@ Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |::|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|00|ALUI|ADDI|MLTI|DIVI|ANDI|ORI |
+|00|[ALUI](#ALUI)|[ADDI](#ADDI)|[MLTI](#MLTI)|[DIVI](#DIVI)|[ANDI](#ANDI)|[ORI](#ORI)|
 |01|SUL |SSL |SUR |SSR |
 |10|LW  |LB  |SW  |SB  |LUI |
 |11|BEQ |BNE |BLT |BLE |    |    |    |JAL |
+
+##### ALUI
+Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
+This *should not be written directly in an assembly program*, and the assembler will throw an error if encountered!
 
 ##### ADDI
 `ADDI $argD, $arg1, imm`        <br>
@@ -159,15 +163,15 @@ Performs an OR on `$arg1` and `imm` and stores the result in `$argD`.
 **$argD <- $arg1 << imm**        <br>
 Unsigned left-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
-##### SUR
-`SUR $argD, $arg1, imm`        <br>
-**$argD <- $arg1 >> imm**        <br>
-Unsigned right-shifts `$arg1` by `imm` and stores the result in `$argD`.
-
 ##### SSL
 `SSL $argD, $arg1, imm`        <br>
 **$argD <- $arg1 <<< imm**        <br>
 Signed left-shifts `$arg1` by `imm` and stores the result in `$argD`.
+
+##### SUR
+`SUR $argD, $arg1, imm`        <br>
+**$argD <- $arg1 >> imm**        <br>
+Unsigned right-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
 ##### SSR
 `SSR $argD, $arg1, imm`        <br>
@@ -223,10 +227,6 @@ Branches to `imm` if `$arg1` is **not equal to** `$arg2`; else, advances to the 
 `JAL $argD, $arg1`        <br>
 **$argD <- (PC + 4), PC <- $arg1**        <br>
 Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$argD`.
-
-##### ALUI
-Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
-This *should not be written directly in an assembly program*, and the assembler will throw an error if encountered!
 
 #### Secondary
 
