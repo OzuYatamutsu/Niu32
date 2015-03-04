@@ -134,6 +134,16 @@ Multiplies `$arg1` by `imm` and stores the result in `$argD`.
 **$argD <- $arg1 / imm**        <br>
 Divides `$arg1` by `imm` and stores the result in `$argD`.
 
+##### ANDI
+`ANDI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 & imm**        <br>
+Performs an AND on `$arg1` and `imm` and stores the result in `$argD`.
+
+##### ORI
+`ORI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 & imm**        <br>
+Performs an OR on `$arg1` and `imm` and stores the result in `$argD`.
+
 ##### SUL
 `SUL $argD, $arg1, imm`        <br>
 **$argD <- $arg1 << imm**        <br>
@@ -173,6 +183,11 @@ Stores the word in `$arg1` at the memory location computed by adding `$arg1` and
 `SB $argD, $arg1, imm`      <br>
 **Mem[$arg2 + imm] <- $arg1**       <br>
 Stores the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. The value in `$arg1` will be shrunk into an 8-bit value before being stored in memory, which may result in undefined behavior if the value does not fit into 8 bits.
+
+##### LUI
+`LUI $argD, imm`        <br>
+**$argD <- imm[16:1]**      <br>
+Loads the **most-significant 16 bits** of `imm` into `$argD`. Can be combined with `ORI` to load a 32-bit immediate value into a register.
 
 ##### BEQ
 `BEQ $arg1, $arg2, imm`        <br>
@@ -254,13 +269,11 @@ Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
 Performs a bitwise OR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ##### NOT
-
 `NOT $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 ~ $arg2**    <br>
 Performs a bitwise NOT on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ##### XOR
-
 `XOR $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 ^ $arg2**    <br>
 Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
@@ -311,7 +324,17 @@ The assembler will expand this into two seperate `XOR` and `NOT` instructions.
 Copies the value stored in `$arg1` into `$argD`.<br>
 The assembler will transform this into an `ADD` instruction.
 
-##### LI
+##### LA
+`LA $argD, imm`      <br>
+**$argD <- MemLoc(imm)**        <br>
+Stores the memory location of `imm` into `$argD`.<br>
+The assembler will expand this into `LUI` and `ORI` instructions.
+
+##### LV
+`LV $argD, imm`
+**$argD <- imm**        <br>
+Stores the value of `imm` into `$argD`.<br>
+The assembler will expand this into `LUI` and `ORI` instructions.
 
 ##### CLR
 `CLR $argD`       <br>
