@@ -119,6 +119,16 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 
 #### Primary
 
+The opcode table below summarizes the binary instruction corresponding to each opcode.
+Most significant bits are to the left, while least significant are to the top.
+
+|xx|000 |001 |010 |011 |100 |101 |110 |111 |
+|::|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|00|ALUI|ADDI|MLTI|DIVI|ANDI|ORI |
+|01|SUL |SSL |SUR |SSR |
+|10|LW  |LB  |SW  |SB  |LUI |
+|11|BEQ |BNE |BLT |BLE |    |    |    |JAL |
+
 ##### ADDI
 `ADDI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 + imm**        <br>
