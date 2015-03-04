@@ -208,6 +208,11 @@ Loads the **most-significant 16 bits** of `imm` into `$argD`. Can be combined wi
 **$arg1 == $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
 Branches to `imm` if `$arg1` is **equal to** `$arg2`; otherwise, advances to the next instruction.
 
+##### BNE
+`BNE $arg1, $arg2, imm`        <br>
+**$arg1 != $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
+Branches to `imm` if `$arg1` is **not equal to** `$arg2`; else, advances to the next instruction.
+
 ##### BLT
 `BLT $arg1, $arg2, imm`        <br>
 **$arg1 < $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
@@ -217,11 +222,6 @@ Branches to `imm` if `$arg1` is **less than** `$arg2`; otherwise, advances to th
 `BLE $arg1, $arg2, imm`        <br>
 **$arg1 <= $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
 Branches to `imm` if `$arg1` is **less than or equal to** `$arg2`; otherwise, advances to the next instruction.
-
-##### BNE
-`BNE $arg1, $arg2, imm`        <br>
-**$arg1 != $arg2 ? PC <- 4*imm : PC <- (PC + 4)**        <br>
-Branches to `imm` if `$arg1` is **not equal to** `$arg2`; else, advances to the next instruction.
 
 ##### JAL
 `JAL $argD, $arg1`        <br>
