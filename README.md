@@ -122,6 +122,8 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 The opcode table below summarizes the binary instruction corresponding to each opcode.
 Most significant bits are to the left, while least significant are to the top.
 
+_Why are there spaces in the table?_ Spaces are left open in the opcode space to allow for instructions to be expanded in future (for example, to add **load half-word** functionality to the base load operations).
+
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 |**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)||
