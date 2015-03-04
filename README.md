@@ -113,7 +113,10 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 |0x7FFF|0xFF|0xCC|0xBB|0xAA|
 
 **Word at 0x0000**: `0xDEADBEEF` (32 bits) <br>
-**Byte at 0x0000**: `0xDE` (8 bits)
+**Byte at 0x0000**: `0xDE` (8 bits)<br>
+**Byte at 0x0001**: `0xAD` (8 bits)<br>
+**Byte at 0x0002**: `0xBE` (8 bits)<br>
+**Byte at 0x0003**: `0xEF` (8 bits)
 
 ## Opcodes
 
