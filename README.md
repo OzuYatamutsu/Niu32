@@ -310,8 +310,8 @@ Jumps to the address of the subroutine stored in `$arg1` and stores the previous
 The assembler will transform this into a `JAL` instruction.
 
 ##### RET
-`RET`
-**PC <- $ra**
+`RET`   <br>
+**PC <- $ra**   <br>
 Returns the PC to the memory location stored in the `$ra` (return address) register. <br>
 The assembler will transform this into a `JAL` instruction.
 
