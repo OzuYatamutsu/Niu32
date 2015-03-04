@@ -14,7 +14,7 @@ In Niu32, ops are listed in **UPPERCASE**, labels in **lowercase**, and numbers 
 
 Registers are prefixed with a `$`, and line comments are prefixed with a `!`.
 
-Although not a valid register in our instruction set, we will refer to instruction arguments involving registers with the designations `$arg1`, `$arg2`, and `$argD` for source and destination registers, respectively.
+Although not a valid register in our instruction set, we will refer to instruction arguments involving registers with the designations `$arg1`, `$arg2`, and `$argD` for source and destination registers, respectively. We will use the value `0xBEEF` for numerical arguments.
 
 ## Instruction word format
 
@@ -330,3 +330,15 @@ The assembler will expand this into `SW` and `ADDI` instructions.
 **$sp + WORD_SIZE, $arg1 <- Mem[$sp]**  <br>
 Shrinks the stack pointer (moves down in memory) and pops the word value at the stack pointer into `$argD`. <br>
 The assembler will expand this into `LW` and `ADDI` instructions.
+
+#### Directives
+
+Assembler directives are prefixed with a `.`, and are not mapped to machine instructions.
+
+##### .NAME
+`.NAME label 0xBEEF`    <br>
+Instructs the assembler to track a new variable in memory with the name (`label`) and value (`0xBEEF`) specified.
+
+##### .ORIG
+`.ORIG 0xBEEF`  <br>
+Instructs the assembler to start the following instructions at the given memory location (`0xBEEF`).
