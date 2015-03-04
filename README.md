@@ -91,6 +91,8 @@ Niu32 has **32** addressable registers.
 |R30|$k0|11110|**Kernel register 0**. Reserved for kernel use (for example, during interrupt handling).
 |R31|$k1|11111|**Kernel register 1**. Reserved for kernel use (for example, during interrupt handling).
 
+## Memory
+
 ## Opcodes
 
 #### Primary
