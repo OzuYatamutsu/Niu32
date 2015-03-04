@@ -93,7 +93,7 @@ Niu32 has **32** addressable registers.
 
 ## Memory
 
-Niu32's memory is **byte** and **word-addressable**. The size of a memory word is **32 bits (4 bytes)**, so any implementation of a Niu32 ISA must reserve 2 bits to select a single byte at a given memory location.
+Niu32's memory is **byte** and **word-addressable**. The size of a memory word is **32 bits (4 bytes)**, so any implementation of a Niu32 ISA must reserve the least-significant 2 bits to select a single byte at a given memory location.
 
 |Selection bits|Select|
 |:------------:|:----:|
@@ -111,6 +111,9 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 |0x0008|0xB0|0x0B|0x55|0x66|
 |...|...|...|...|...|
 |0x7FFF|0xFF|0xCC|0xBB|0xAA|
+
+**Word at 0x0000**: `0xDEADBEEF` (32 bits)
+**Byte at 0x0000**: `0xDE` (8 bits)
 
 ## Opcodes
 
@@ -156,10 +159,20 @@ Signed right-shifts `$arg1` by `imm` and stores the result in `$argD`.
 **$argD <- Mem[$arg1 + 4*imm]**       <br>
 Loads the word at the memory location computed by adding `$arg1` and `imm` into `$argD`.
 
+##### LB
+`LB $argD, $arg1, imm`      <br>
+**$argD <- Mem[$arg1 + imm]**       <br>
+Loads the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. Note that the byte will be sign-extended to 32 bits before being stored in `$argD`.
+
 ##### SW
 `LW $arg1, $arg2, imm`          <br>
 **Mem[$arg2 + 4*imm] <- $arg1**       <br>
 Stores the word in `$arg1` at the memory location computed by adding `$arg1` and `imm` into `$argD`.
+
+##### SB
+`SB $argD, $arg1, imm`      <br>
+**Mem[$arg2 + imm] <- $arg1**       <br>
+Stores the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. The value in `$arg1` will be shrunk into an 8-bit value before being stored in memory, which may result in undefined behavior if the value does not fit into 8 bits.
 
 ##### BEQ
 `BEQ $arg1, $arg2, imm`        <br>
