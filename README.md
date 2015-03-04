@@ -112,7 +112,7 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 |...|...|...|...|...|
 |0x7FFF|0xFF|0xCC|0xBB|0xAA|
 
-**Word at 0x0000**: `0xDEADBEEF` (32 bits)
+**Word at 0x0000**: `0xDEADBEEF` (32 bits) <br>
 **Byte at 0x0000**: `0xDE` (8 bits)
 
 ## Opcodes
@@ -124,10 +124,10 @@ Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|00|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)|[ANDI](#andi)|[ORI](#ori)|
-|01|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
-|10|[LW](#lw)|[LB](#lb)|[SW](#sw)|[SB](#sb)|[LUI](#lui)|
-|11|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
+|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)|[ANDI](#andi)|[ORI](#ori)|
+|**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
+|**10**|[LW](#lw)|[LB](#lb)|[SW](#sw)|[SB](#sb)|[LUI](#lui)|
+|**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
 
 ##### ALUI
 Signals the processor to check **OP2** for operation to perform. This instruction and encoding of the secondary opcode will be handled by the assembler according to the instruction written in the program (i.e. there should be no difference to the programmer as to how to write an instruction that uses the primary vs. secondary opcode).
