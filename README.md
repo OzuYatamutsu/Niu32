@@ -124,9 +124,9 @@ Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)|[ANDI](#andi)|[ORI](#ori)|
+|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)||
 |**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
-|**10**|[LW](#lw)|[LB](#lb)|[SW](#sw)|[SB](#sb)|[LUI](#lui)|
+|**10**|[LW](#lw)|[LB](#lb)||[SW](#sw)|[SB](#sb)||[LUI](#lui)|
 |**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
 
 ##### ALUI
