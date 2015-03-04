@@ -317,10 +317,6 @@ The assembler will transform this into a `JAL` instruction.
 Returns the PC to the memory location stored in the `$ra` (return address) register. <br>
 The assembler will transform this into a `JAL` instruction.
 
-##### STOR
-
-##### LOAD
-
 ##### PUSH
 `PUSH $arg1`    <br>
 **Mem[$sp] <- $arg1, $sp - WORD_SIZE**  <br>
