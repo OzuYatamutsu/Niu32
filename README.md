@@ -123,7 +123,7 @@ The opcode table below summarizes the binary instruction corresponding to each o
 Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
-|::|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 |00|[ALUI](#ALUI)|[ADDI](#ADDI)|[MLTI](#MLTI)|[DIVI](#DIVI)|[ANDI](#ANDI)|[ORI](#ORI)|
 |01|SUL |SSL |SUR |SSR |
 |10|LW  |LB  |SW  |SB  |LUI |
