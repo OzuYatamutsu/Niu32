@@ -129,7 +129,7 @@ _Why are there spaces in the table?_ Spaces are left open in the opcode space to
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)||
+|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)|[XORI](#xori)|
 |**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
 |**10**|[LW](#lw)|[LB](#lb)||[SW](#sw)|[SB](#sb)||[LUI](#lui)|
 |**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
@@ -162,6 +162,11 @@ Performs an AND on `$arg1` and `imm` and stores the result in `$argD`.
 `ORI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 & imm**        <br>
 Performs an OR on `$arg1` and `imm` and stores the result in `$argD`.
+
+##### XORI
+`XORI $argD, $arg1, imm`        <br>
+**$argD <- $arg1 & imm**        <br>
+Performs an XOR on `$arg1` and `imm` and stores the result in `$argD`.
 
 ##### SUL
 `SUL $argD, $arg1, imm`        <br>
@@ -237,6 +242,14 @@ Jumps to the address of the subroutine stored in `$arg1` and stores the previous
 
 These instructions are encoded in the **OP2** instruction word field (see above). 
 They will be executed if the **OP1** instruction word field is set to **ALUI** (`00000`).
+
+|xx|000 |001 |010 |011 |100 |101 |110 |111 |
+|:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)||
+|**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
+|**10**|[LW](#lw)|[LB](#lb)||[SW](#sw)|[SB](#sb)||[LUI](#lui)|
+|**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
+
 
 ##### ADD
 `ADD $argD, $arg1, $arg2`       <br>
