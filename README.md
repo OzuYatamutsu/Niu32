@@ -249,7 +249,7 @@ Most significant bits are to the left, while least significant are to the top.
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 |**00**||[ADD](#add)|[MLT](#mlt)|[DIV](#div)|[NOT](#not)|[AND](#and)|[OR](#or)|[XOR](#xor)|
-|**01**|[SUL](#sul)||[SUR](#sur)|[SSR](#ssr)|
+|**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
 |**10**|[EQ](#eq)|[LT](#lt)|[LEQ](#leq)|||||
 |**11**|||||    |    |    ||
 
@@ -293,6 +293,26 @@ Performs a bitwise OR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 `XOR $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 ^ $arg2**    <br>
 Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
+##### SUL
+`SUL $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 << $arg2**        <br>
+Unsigned left-shifts `$arg1` by `$arg2` and stores the result in `$argD`.
+
+##### SSL
+`SSL $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 <<< $arg2**        <br>
+Signed left-shifts `$arg1` by `$arg2` and stores the result in `$argD`.
+
+##### SUR
+`SUR $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 >> $arg2**        <br>
+Unsigned right-shifts `$arg1` by `$arg2` and stores the result in `$argD`.
+
+##### SSR
+`SSR $argD, $arg1, $arg2`        <br>
+**$argD <- $arg1 >>> $arg2**        <br>
+Signed right-shifts `$arg1` by `$arg2` and stores the result in `$argD`.
 
 ##### EQ
 `EQ $argD, $arg1, $arg2`       <br>
