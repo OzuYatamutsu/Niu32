@@ -130,7 +130,7 @@ _Why are there spaces in the table?_ Spaces are left open in the opcode space to
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 |**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)|[XORI](#xori)|
-|**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
+|**01**|[SULI](#suli)|[SSLI](#ssli)|[SURI](#suri)|[SSRI](#ssri)|
 |**10**|[LW](#lw)|[LB](#lb)||[SW](#sw)|[SB](#sb)||[LUI](#lui)|
 |**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
 
@@ -168,23 +168,23 @@ Performs an OR on `$arg1` and `imm` and stores the result in `$argD`.
 **$argD <- $arg1 & imm**        <br>
 Performs an XOR on `$arg1` and `imm` and stores the result in `$argD`.
 
-##### SUL
-`SUL $argD, $arg1, imm`        <br>
+##### SULI
+`SULI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 << imm**        <br>
 Unsigned left-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
-##### SSL
-`SSL $argD, $arg1, imm`        <br>
+##### SSLI
+`SSLI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 <<< imm**        <br>
 Signed left-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
-##### SUR
-`SUR $argD, $arg1, imm`        <br>
+##### SURI
+`SURI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 >> imm**        <br>
 Unsigned right-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
-##### SSR
-`SSR $argD, $arg1, imm`        <br>
+##### SSRI
+`SSRI $argD, $arg1, imm`        <br>
 **$argD <- $arg1 >>> imm**        <br>
 Signed right-shifts `$arg1` by `imm` and stores the result in `$argD`.
 
@@ -243,12 +243,15 @@ Jumps to the address of the subroutine stored in `$arg1` and stores the previous
 These instructions are encoded in the **OP2** instruction word field (see above). 
 They will be executed if the **OP1** instruction word field is set to **ALUI** (`00000`).
 
+As in the primary opcode table, the opcode table below summarizes the binary instruction corresponding to each opcode.
+Most significant bits are to the left, while least significant are to the top.
+
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|**00**|[ALUI](#alui)|[ADDI](#addi)|[MLTI](#mlti)|[DIVI](#divi)||[ANDI](#andi)|[ORI](#ori)||
-|**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
-|**10**|[LW](#lw)|[LB](#lb)||[SW](#sw)|[SB](#sb)||[LUI](#lui)|
-|**11**|[BEQ](#beq)|[BNE](#bne)|[BLT](#blt)|[BLE](#ble)|    |    |    |[JAL](#jal)|
+|**00**||[ADD](#add)|[MLT](#mlt)|[DIV](#div)|[NOT](#not)|[AND](#and)|[OR](#or)|[XOR](#xor)|
+|**01**|[SUL](#sul)||[SUR](#sur)|[SSR](#ssr)|
+|**10**|[EQ](#eq)|[LT](#lt)|[LEQ](#leq)|||||
+|**11**|||||    |    |    ||
 
 
 ##### ADD
@@ -271,6 +274,26 @@ Multiplies `$arg1` by `$arg2` and stores the result in `$argD`.
 **$argD <- $arg1 / $arg2**        <br>
 Divides `$arg1` by `$arg2` and stores the result in `$argD`.
 
+##### NOT
+`NOT $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 ~ $arg2**    <br>
+Performs a bitwise NOT on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
+##### AND
+`AND $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 & $arg2**    <br>
+Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
+##### OR
+`OR $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 | $arg2**    <br>
+Performs a bitwise OR on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
+##### XOR
+`XOR $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 ^ $arg2**    <br>
+Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
+
 ##### EQ
 `EQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 == $arg2) ? 1 : 0**    <br>
@@ -285,26 +308,6 @@ Stores a value of **1** in `$argD` if `$arg1` is **less than** `$arg2`; otherwis
 `LEQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 <= $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg2`; otherwise stores a **0**.
-
-##### AND
-`AND $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 & $arg2**    <br>
-Performs a bitwise AND on `$arg1` and `$arg2`, and stores the result in `$argD`.
-
-##### OR
-`OR $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 | $arg2**    <br>
-Performs a bitwise OR on `$arg1` and `$arg2`, and stores the result in `$argD`.
-
-##### NOT
-`NOT $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 ~ $arg2**    <br>
-Performs a bitwise NOT on `$arg1` and `$arg2`, and stores the result in `$argD`.
-
-##### XOR
-`XOR $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 ^ $arg2**    <br>
-Performs a bitwise XOR on `$arg1` and `$arg2`, and stores the result in `$argD`.
 
 ## Assembler
 
