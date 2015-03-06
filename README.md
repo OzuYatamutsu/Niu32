@@ -248,21 +248,20 @@ Most significant bits are to the left, while least significant are to the top.
 
 |xx|000 |001 |010 |011 |100 |101 |110 |111 |
 |:-:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|**00**||[ADD](#add)|[MLT](#mlt)|[DIV](#div)|[NOT](#not)|[AND](#and)|[OR](#or)|[XOR](#xor)|
+|**00**|[SUB](#sub)|[ADD](#add)|[MLT](#mlt)|[DIV](#div)|[NOT](#not)|[AND](#and)|[OR](#or)|[XOR](#xor)|
 |**01**|[SUL](#sul)|[SSL](#ssl)|[SUR](#sur)|[SSR](#ssr)|
-|**10**|[EQ](#eq)|[LT](#lt)|[LEQ](#leq)|||||
+|**10**|[EQ](#eq)|[NEQ](#neq)|[LT](#lt)|[LEQ](#leq)||||
 |**11**|||||    |    |    ||
-
-
-##### ADD
-`ADD $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 + $arg2**    <br>
-Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
 
 ##### SUB
 `SUB $argD, $arg1, $arg2`       <br>
 **$argD <- $arg1 - $arg2**    <br>
 Subtracts `$arg1` from `$arg2`, and stores the result in `$argD`.
+
+##### ADD
+`ADD $argD, $arg1, $arg2`       <br>
+**$argD <- $arg1 + $arg2**    <br>
+Adds `$arg1` to `$arg2`, and stores the result in `$argD`.
 
 ##### MLT
 `MLT $argD, $arg1, $arg2`        <br>
@@ -318,6 +317,11 @@ Signed right-shifts `$arg1` by `$arg2` and stores the result in `$argD`.
 `EQ $argD, $arg1, $arg2`       <br>
 **$argD <- ($arg1 == $arg2) ? 1 : 0**    <br>
 Stores a value of **1** in `$argD` if `$arg1` is **equal to** `$arg2`; otherwise stores a **0**.
+
+##### NEQ
+`NEQ $argD, $arg1, $arg2`       <br>
+**$argD <- ($arg1 != $arg2) ? 1 : 0**    <br>
+Stores a value of **1** in `$argD` if `$arg1` is **not equal to** `$arg2`; otherwise stores a **0**.
 
 ##### LT
 `LT $argD, $arg1, $arg2`       <br>
