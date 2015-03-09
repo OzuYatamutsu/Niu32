@@ -106,12 +106,14 @@ def main():
 
     # If an output filename was not specified, use the input filename
     if (OUTPUT_FILENAME == ""): 
-        OUTPUT_FILENAME = argv[1].replace(".", "") + OUTPUT_EXT
+        OUTPUT_FILENAME = argv[1].split(".")
+        OUTPUT_FILENAME = OUTPUT_FILENAME[0:len(OUTPUT_FILENAME) - 1]
+        OUTPUT_FILENAME = ".".join(OUTPUT_FILENAME) + OUTPUT_EXT
 
     # Debug output - end of command-line arg parsing
     if VERBOSE: 
         print(VER_MAIN_COMPL.replace("{arg1}", argv[1])
-              .replace("{argv2}", OUTPUT_FILENAME))
+              .replace("{arg2}", OUTPUT_FILENAME))
 
 # Run assembler on call!
 main()
