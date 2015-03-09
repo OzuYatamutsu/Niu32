@@ -10,6 +10,10 @@ OUTPUT_ARG_LONG = "--output"
 VERBOSE_ARG_SHORT = "-v"
 VERBOSE_ARG_LONG = "--verbose"
 
+### ...and their respective flags
+OUTPUT_FILENAME = ""
+VERBOSE = False
+
 ### Error/Warning/Informational messages
 ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     Valid arguments:\n
@@ -37,7 +41,10 @@ OP1 = {"ALUI": "00000", "ADDI": "00001", "MLTI": "00010",
        "LUI": "10110", "BEQ": "11000", "BNE": "11001", 
        "BLT": "11010", "BLE": "11011", "JAL": "11111"}
 
+
 def main():
+    '''The entry point of the assembler.'''
+
     # Parse command-line arguments
     if (len(argv) < MIN_ARG_SIZE):
         print(ERR_INVALID_ARGS)
