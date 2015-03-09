@@ -20,6 +20,10 @@ ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     -o [filename], --output [filename]: Output filename.
     -v, --verbose: Print verbose output."""
 
+### Start symbols
+REG_SYM = "$"
+PSEUDO_SYM = "."
+
 ### Lookup tables
 REGS = {"zero": "00000", "a0": "00001", "a1": "00010", 
         "a2": "00011", "a3": "00100", "t0": "00101", 
@@ -41,6 +45,19 @@ OP1 = {"ALUI": "00000", "ADDI": "00001", "MLTI": "00010",
        "LUI": "10110", "BEQ": "11000", "BNE": "11001", 
        "BLT": "11010", "BLE": "11011", "JAL": "11111"}
 
+OP2 = {"SUB": "00000", "ADD": "00001", "MLT": "00010", 
+       "DIV": "00011", "NOT": "00100", "AND": "00101", 
+       "OR": "00110", "XOR": "00111", "SUL": "01000", 
+       "SSL": "01001", "SUR": "01010", "SSR": "01010", 
+       "EQ": "10000", "NEQ": "10001", "LT": "10010", 
+       "LEQ": "10011"}
+
+PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
+             "NXOR", "CPY", "LA", "LV", "CLR", 
+             "BGT", "BGE", "GOTO", "JMP", "RET", 
+             "PUSH", "POP"]
+
+DIRECTIVES = ["NAME", "ORIG"]
 
 def main():
     '''The entry point of the assembler.'''
