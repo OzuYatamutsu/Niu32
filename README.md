@@ -335,6 +335,36 @@ Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg
 
 ## Assembler
 
+The Niu32 assembler provided here takes in an input Niu32 assembly program, and outputs an assembled program in Altera Memory Initialization File (MIF) format.
+
+The format of each instruction in an output MIF is as follows:
+```
+-- @ <MEMORY_LOCATION> : <INSTRUCTION>
+<INSTRUCTION_NUM> : <ASSEMBLED_INSTRUCTION>
+```
+
+**<MEMORY_LOCATION>**: The location in memory where this instruction will be stored in. The default is to start from `0x00000000` - however, a memory location can be set manually anywhere in the program with the [.ORIG](#orig) assembler directive.
+
+**<INSTRUCTION>**: The input instruction, as written.
+
+**<INSTRUCTION_NUM>**: The index into instruction memory this instruction word can be found at. For example, an instruction at location `0x0000000c` would be found at index `00000003` in a 32-bit instruction memory. 
+
+**<ASSEMBLED_INSTRUCTION>**: The assembled hex instruction.
+
+The assembler is written in **Python 3**, and as such should be prefixed with `python` or `python3`, depending on your system's default Python interpreter. The assembler will output a
+
+The syntax of the assembler is as follows:
+
+`n32-assemble.py <filename> [-o|--output <filename>] [-v|--verbose]`
+
+#### Arguments
+
+**<filename>**: The input filename of the Niu32 assembly program to assemble.
+
+**-o**, **--output**: The output filename of the assembled program. If none is specified, the default is to strip the extension of the input filename and append `.mif`.
+
+**-v**, **--verbose**: Print all intermediate output. Default is to surpress all intermediate output except errors.
+
 #### Pseudo-ops
 
 ##### SUBI
