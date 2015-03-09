@@ -343,13 +343,13 @@ The format of each instruction in an output MIF is as follows:
 <INSTRUCTION_NUM> : <ASSEMBLED_INSTRUCTION>
 ```
 
-**<MEMORY_LOCATION>**: The location in memory where this instruction will be stored in. The default is to start from `0x00000000` - however, a memory location can be set manually anywhere in the program with the [.ORIG](#orig) assembler directive.
+**&lt;MEMORY_LOCATION&gt;**: The location in memory where this instruction will be stored in. The default is to start from `0x00000000` - however, a memory location can be set manually anywhere in the program with the [.ORIG](#orig) assembler directive.
 
-**<INSTRUCTION>**: The input instruction, as written.
+**&lt;INSTRUCTION&gt;**: The input instruction, as written.
 
-**<INSTRUCTION_NUM>**: The index into instruction memory this instruction word can be found at. For example, an instruction at location `0x0000000c` would be found at index `00000003` in a 32-bit instruction memory. 
+**&lt;INSTRUCTION_NUM&gt;**: The index into instruction memory this instruction word can be found at. For example, an instruction at location `0x0000000c` would be found at index `00000003` in a 32-bit instruction memory. 
 
-**<ASSEMBLED_INSTRUCTION>**: The assembled hex instruction.
+**&lt;ASSEMBLED_INSTRUCTION&gt;**: The assembled hex instruction.
 
 The assembler is written in **Python 3**, and as such should be prefixed with `python` or `python3`, depending on your system's default Python interpreter. The assembler will output a
 
@@ -359,7 +359,7 @@ The syntax of the assembler is as follows:
 
 #### Arguments
 
-**<filename>**: The input filename of the Niu32 assembly program to assemble.
+**&lt;filename&gt;**: The input filename of the Niu32 assembly program to assemble.
 
 **-o**, **--output**: The output filename of the assembled program. If none is specified, the default is to strip the extension of the input filename and append `.mif`.
 
