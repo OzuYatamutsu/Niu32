@@ -120,7 +120,9 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 
 ## Opcodes
 
-#### Primary
+Below are the defined assembly instructions that have a direct mapping to a 5-bit binary instruction.
+
+### Primary
 
 The opcode table below summarizes the binary instruction corresponding to each opcode.
 Most significant bits are to the left, while least significant are to the top.
@@ -238,7 +240,7 @@ Branches to `imm` if `$arg1` is **less than or equal to** `$arg2`; otherwise, ad
 **$argD <- (PC + 4), PC <- $arg1**        <br>
 Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$argD`.
 
-#### Secondary
+### Secondary
 
 These instructions are encoded in the **OP2** instruction word field (see above). 
 They will be executed if the **OP1** instruction word field is set to **ALUI** (`00000`).
@@ -367,7 +369,9 @@ The format of each instruction in an output MIF is as follows:
 
 **&lt;ASSEMBLED_INSTRUCTION&gt;**: The assembled hex instruction.
 
-#### Pseudo-ops
+### Pseudo-ops
+
+These are ops which can be used in a Niu32 assembly program, but do not correspond directly to defined opcodes. The assembler will take the responsibility of translating these into actual machine instructions, and the programmer can write these into an assembly program like any other instruction.
 
 ##### SUBI
 `SUBI $argD, $arg1, imm`        <br>
@@ -471,7 +475,7 @@ The assembler will expand this into `SW` and `ADDI` instructions.
 Shrinks the stack pointer (moves down in memory) and pops the word value at the stack pointer into `$argD`. <br>
 The assembler will expand this into `LW` and `ADDI` instructions.
 
-#### Directives
+### Directives
 
 Assembler directives are prefixed with a `.`, and are not mapped to machine instructions.
 
