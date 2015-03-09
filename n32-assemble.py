@@ -7,22 +7,30 @@ MIN_ARG_SIZE = 2
 ### Command line arguments
 OUTPUT_ARG = "-o"
 OUTPUT_ARG_LONG = "--output"
-VERBOSE_ARG_SHORT = "-v"
+VERBOSE_ARG = "-v"
 VERBOSE_ARG_LONG = "--verbose"
 
 ### ...and their respective flags
 OUTPUT_FILENAME = ""
 VERBOSE = False
 
+### Symbols
+REG_SYM = "$"
+PSEUDO_SYM = "."
+OUTPUT_EXT = ".mif"
+ERROR_HDR = "<error> "
+VERBOSE_HDR = "<verbose> "
+
 ### Error/Warning/Informational messages
 ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     Valid arguments:\n
     -o [filename], --output [filename]: Output filename.
     -v, --verbose: Print verbose output."""
-
-### Start symbols
-REG_SYM = "$"
-PSEUDO_SYM = "."
+ERR_NUM_ARGS = ERROR_HDR + "Invalid number of arguments.\n"
+VER_MAIN_COMPL = VERBOSE_HDR + """Parsing arguments complete!
+    Input file: {arg1}
+    Output file: {arg2}
+    Verbose mode is on!"""
 
 ### Lookup tables
 REGS = {"zero": "00000", "a0": "00001", "a1": "00010", 
@@ -66,6 +74,44 @@ def main():
     if (len(argv) < MIN_ARG_SIZE):
         print(ERR_INVALID_ARGS)
         _exit(-1)
+
+    # If an output filename was specified, set it!
+    if (OUTPUT_ARG in argv) or (OUTPUT_ARG_LONG in argv):
+        if (OUTPUT_ARG in argv):
+            OUTPUT_FILENAME = argv[argv.index(OUTPUT_ARG) + 1]
+            del argv[argv.index(OUTPUT_ARG) + 1]
+            del argv[argv.index(OUTPUT_ARG)]
+        else:
+            OUTPUT_FILENAME = argv[argv.index(OUTPUT_ARG_LONG) + 1]
+            del argv[argv.index(OUTPUT_ARG_LONG) + 1]
+            del argv[argv.index(OUTPUT_ARG_LONG)]
+
+    # If verbose argument was specified, set the flag!
+    if (VERBOSE_ARG in argv) or (VERBOSE_ARG_LONG in argv):
+        VERBOSE = True
+
+        if (VERBOSE_ARG in argv): 
+            del argv[argv.index(VERBOSE_ARG)]
+        else:
+            del argv[argv.index(VERBOSE_ARG_LONG)]
+
+    # At this point, we should only have two arguments:
+    # argv[0] = Python module
+    # argv[1] = Input filename
+    
+    # Sanity check for above!
+    if (len(argv) != 2):
+        print(ERR_NUM_ARGS)
+        _exit(-1)
+
+    # If an output filename was not specified, use the input filename
+    if (OUTPUT_FILENAME == ""): 
+        OUTPUT_FILENAME = argv[1].replace(".", "") + OUTPUT_EXT
+
+    # Debug output - end of command-line arg parsing
+    if VERBOSE: 
+        print(VER_MAIN_COMPL.replace("{arg1}", argv[1])
+              .replace("{argv2}", OUTPUT_FILENAME))
 
 # Run assembler on call!
 main()
