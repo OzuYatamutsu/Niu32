@@ -16,6 +16,8 @@ Registers are prefixed with a `$`, and line comments are prefixed with a `!`.
 
 Although not a valid register in our instruction set, we will refer to instruction arguments involving registers with the designations `$arg1`, `$arg2`, and `$argD` for source and destination registers, respectively. We will use the value `0xBEEF` for numerical arguments.
 
+If you use **Notepad++**, importing `n32-notepad++-udl.xml` as a User-Defined Language (Language -> Define your language... -> Import...) will add syntax highlighting to a Niu32 assembly program.
+
 ## Instruction word format
 
 An instruction word in Niu32 is 32 bits long. We will start counting from **bit 31** (most-significant) to **bit 0** (least-significant).
