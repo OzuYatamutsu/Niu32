@@ -149,7 +149,7 @@ def main():
     # Debug output - start label resolution
     if VERBOSE: print(VER_STG3_START)
 
-    output = resolveAll(output, labels, unresolved)
+    output = resolve_all(output, labels, unresolved)
 
     # Debug output - end label resolution
     if VERBOSE: print(VER_STG3_START)
@@ -159,7 +159,7 @@ def main():
     # Debug output - start file write
     if VERBOSE: print(VER_STG4_START)
 
-    outputFile(output)
+    output_file(output)
 
     # Debug output - end file write
     if VERBOSE: print(VER_STG4_END)
@@ -196,13 +196,13 @@ def assemble(inputAsm):
     return outputAsm, labels, unresolved
 
 
-def resolveAll(asm, labels, uses):
+def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
 
     pass
 
-def outputFile(output):
+def output_file(output):
     '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
 
     pass
