@@ -31,6 +31,15 @@ VER_MAIN_COMPL = VERBOSE_HDR + """Parsing arguments complete!
     Input file: {arg1}
     Output file: {arg2}
     Verbose mode is on!"""
+VER_STG1_START = VERBOSE_HDR + "[Stage 1] Reading input file..."
+VER_STG1_END = VERBOSE_HDR + "[Stage 1] File read complete!"
+VER_STG2_START = VERBOSE_HDR + "[Stage 2] Starting line-by-line assembly..."
+VER_STG2_END = VERBOSE_HDR + "[Stage 2] Assembly complete!"
+VER_STG3_START = VERBOSE_HDR + "[Stage 3] Starting label resolution..."
+VER_STG3_END = VERBOSE_HDR + "[Stage 3] Label resolution complete!"
+VER_STG4_START = VERBOSE_HDR + "[Stage 4] Writing output file..."
+VER_STG4_END = VERBOSE_HDR + "[Stage 4] File write complete!"
+ASSEMBLY_END = "Assembly complete! Wrote to {arg1}"
 
 ### Lookup tables
 REGS = {"zero": "00000", "a0": "00001", "a1": "00010", 
@@ -114,6 +123,99 @@ def main():
     if VERBOSE: 
         print(VER_MAIN_COMPL.replace("{arg1}", argv[1])
               .replace("{arg2}", OUTPUT_FILENAME))
+
+    ## Stage 1: File read
+
+    # Debug output - start reading file
+    if VERBOSE: print(VER_STG1_START)
+
+    input = read_input(argv[1])
+
+    # Debug output - end reading file
+    if VERBOSE: print(VER_STG1_END)
+
+    ## Stage 2: Assembly
+
+    # Debug output - start assemble
+    if VERBOSE: print(VER_STG2_START)
+
+    output, labels, unresolved = assemble(input)
+
+    # Debug output - end assemble
+    if VERBOSE: print(VER_STG2_END)
+
+    ## Stage 3: Label resolution
+
+    # Debug output - start label resolution
+    if VERBOSE: print(VER_STG3_START)
+
+    output = resolveAll(output, labels, unresolved)
+
+    # Debug output - end label resolution
+    if VERBOSE: print(VER_STG3_START)
+
+    ## Stage 4: Write to file
+
+    # Debug output - start file write
+    if VERBOSE: print(VER_STG4_START)
+
+    outputFile(output)
+
+    # Debug output - end file write
+    if VERBOSE: print(VER_STG4_END)
+
+    # Assembly complete!
+    print(ASSEMBLY_END)
+
+def assemble(inputAsm):
+    '''Performs a line-by-line assembly of the input assembly program 
+    and returns an output, incomplete assembled program, along with 
+    a dict of labels and a dict of unresolved uses of those labels.'''
+
+    # Output program, as a line-by-line list
+    outputAsm = []
+
+    # Line number in the input file
+    lineNum = 0
+
+    # Instruction number of current instruction
+    instrNum = 0
+
+    # Memory location of current instruction
+    memLocation = 0
+
+    # Key-value dict of labels to memory locations where declared
+    labels = {}
+
+    # Key-value dict of labels to lists of unresolved uses of labels
+    unresolved = {}
+
+    for line in inputAsm:
+        pass
+
+    return outputAsm, labels, unresolved
+
+
+def resolveAll(asm, labels, uses):
+    '''Resolves all uses of labels to their memory locations in the input 
+    incomplete assembled program (as a list).'''
+
+    pass
+
+def outputFile(output):
+    '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
+
+    pass
+
+def read_input(filename):
+    '''Reads the input assembly program into a list.'''
+
+    f = open(filename, 'r')
+    input = f.readlines()
+    f.close()
+
+    return input
+
 
 # Run assembler on call!
 main()
