@@ -6,7 +6,6 @@
 ! $t1 holds 0x2 at end
 ! $t2 does NOT hold 0xff at end
 
-
 .ORIG 0x1             ! Skip the first location
 
 CLR $t0               ! t0 = 0
