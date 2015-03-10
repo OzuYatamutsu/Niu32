@@ -1,0 +1,16 @@
+.ORIG 0x1             ! Skip the first location
+
+CLR $t0               ! t0 = 0
+ADDI $t1, $zero, 0x2  ! t1 = 0 + 2
+loop:
+ ADDI $t0, $t0, 0x1    ! t0 = t0 + 1
+ BEQ $t0, $t1, endloop ! If t0 = t1, goto endloop
+ GOTO loop             ! Otherwise loop again
+endloop:
+ BEQ $t0, $t1, success ! Sanity check
+error:
+ ADDI $t0, $zero, 0xff ! t0 = 0xff
+ ADD $t1, $t0, $zero   ! t1 = 0xff
+ ADD $t2, $t1, $zero   ! t2 = 0xff
+success:
+ SUB $t0, $t0, $t1     ! t0 = 0
