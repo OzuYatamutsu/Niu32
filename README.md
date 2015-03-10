@@ -120,7 +120,9 @@ For example, a memory can look like the following (with 15 bits of addressabilit
 
 ## Opcodes
 
-#### Primary
+Below are the defined assembly instructions that have a direct mapping to a 5-bit binary instruction.
+
+### Primary
 
 The opcode table below summarizes the binary instruction corresponding to each opcode.
 Most significant bits are to the left, while least significant are to the top.
@@ -238,7 +240,7 @@ Branches to `imm` if `$arg1` is **less than or equal to** `$arg2`; otherwise, ad
 **$argD <- (PC + 4), PC <- $arg1**        <br>
 Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$argD`.
 
-#### Secondary
+### Secondary
 
 These instructions are encoded in the **OP2** instruction word field (see above). 
 They will be executed if the **OP1** instruction word field is set to **ALUI** (`00000`).
@@ -337,20 +339,6 @@ Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg
 
 The Niu32 assembler provided here takes in an input Niu32 assembly program, and outputs an assembled program in Altera Memory Initialization File (MIF) format.
 
-The format of each instruction in an output MIF is as follows:
-```
--- @ <MEMORY_LOCATION> : <INSTRUCTION>
-<INSTRUCTION_NUM> : <ASSEMBLED_INSTRUCTION>
-```
-
-**<MEMORY_LOCATION>**: The location in memory where this instruction will be stored in. The default is to start from `0x00000000` - however, a memory location can be set manually anywhere in the program with the [.ORIG](#orig) assembler directive.
-
-**<INSTRUCTION>**: The input instruction, as written.
-
-**<INSTRUCTION_NUM>**: The index into instruction memory this instruction word can be found at. For example, an instruction at location `0x0000000c` would be found at index `00000003` in a 32-bit instruction memory. 
-
-**<ASSEMBLED_INSTRUCTION>**: The assembled hex instruction.
-
 The assembler is written in **Python 3**, and as such should be prefixed with `python` or `python3`, depending on your system's default Python interpreter. The assembler will output a
 
 The syntax of the assembler is as follows:
@@ -359,13 +347,31 @@ The syntax of the assembler is as follows:
 
 #### Arguments
 
-**<filename>**: The input filename of the Niu32 assembly program to assemble.
+**&lt;filename&gt;**: The input filename of the Niu32 assembly program to assemble.
 
 **-o**, **--output**: The output filename of the assembled program. If none is specified, the default is to strip the extension of the input filename and append `.mif`.
 
 **-v**, **--verbose**: Print all intermediate output. Default is to surpress all intermediate output except errors.
 
-#### Pseudo-ops
+### Output format
+
+The format of each instruction in an output MIF is as follows:
+```
+-- @ <MEMORY_LOCATION> : <INSTRUCTION>
+<INSTRUCTION_NUM> : <ASSEMBLED_INSTRUCTION>
+```
+
+**&lt;MEMORY_LOCATION&gt;**: The location in memory where this instruction will be stored in. The default is to start from `0x00000000` - however, a memory location can be set manually anywhere in the program with the [.ORIG](#orig) assembler directive.
+
+**&lt;INSTRUCTION&gt;**: The input instruction, as written.
+
+**&lt;INSTRUCTION_NUM&gt;**: The index into instruction memory this instruction word can be found at. For example, an instruction at location `0x0000000c` would be found at index `00000003` in a 32-bit instruction memory. 
+
+**&lt;ASSEMBLED_INSTRUCTION&gt;**: The assembled hex instruction.
+
+### Pseudo-ops
+
+These are ops which can be used in a Niu32 assembly program, but do not correspond directly to defined opcodes. The assembler will take the responsibility of translating these into actual machine instructions, and the programmer can write these into an assembly program like any other instruction.
 
 ##### SUBI
 `SUBI $argD, $arg1, imm`        <br>
@@ -469,7 +475,7 @@ The assembler will expand this into `SW` and `ADDI` instructions.
 Shrinks the stack pointer (moves down in memory) and pops the word value at the stack pointer into `$argD`. <br>
 The assembler will expand this into `LW` and `ADDI` instructions.
 
-#### Directives
+### Directives
 
 Assembler directives are prefixed with a `.`, and are not mapped to machine instructions.
 
