@@ -341,7 +341,7 @@ Stores a value of **1** in `$argD` if `$arg1` is **less than or equal to** `$arg
 
 The Niu32 assembler provided here takes in an input Niu32 assembly program, and outputs an assembled program in Altera Memory Initialization File (MIF) format.
 
-The assembler is written in **Python 3**, and as such should be prefixed with `python` or `python3`, depending on your system's default Python interpreter. The assembler will output a
+The assembler is written in **Python 3**, and as such should be prefixed with `python` or `python3`, depending on your system's default Python interpreter.
 
 The syntax of the assembler is as follows:
 
