@@ -6,7 +6,7 @@
 ! $t1 holds 0x2 at end
 ! $t2 does NOT hold 0xff at end
 
-.ORIG 0x1             ! Skip the first location
+.ORIG 0x4             ! Skip the first location
 
 CLR $t0               ! t0 = 0
 ADDI $t1, $zero, 0x2  ! t1 = 0 + 2
