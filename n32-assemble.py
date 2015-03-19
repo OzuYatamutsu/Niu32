@@ -76,6 +76,14 @@ PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
 
 DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
+### Memory symbols
+INSTR_PREFIX = "-- @ "
+BIN_TAG = "<BIN>"
+BIN_CTAG = "</BIN>"
+ADDRESS_INSTR_SEP = " :"
+INSTR_ARG_SEP = "    "
+LINE_INSTR_SEP = " :"
+
 def main():
     '''The entry point of the assembler.'''
 
@@ -302,11 +310,38 @@ def is_meaningful(line):
 
     return (line != "")
 
-def handle_directive(op, args):
-    if (op == ".NAME"):
+def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
+    '''Evaluates a given assembler directive, given the assembler 
+    label table, current address number, current instruction number, 
+    and assembler output queue. Returns the updated label table, 
+    address number, instruction number, and assembler output queue.'''
 
+    if (op == ".NAME"):
+        args = args[0].split("=")
+        labelTable[args[0]] = num_to_binary(args[1])
     elif (op == ".ORIG"):
+        memoryDelta = addressNum 
+        instrDelta = instrNum
+        if isBinary(args[0]): 
+            addressNum = int(args[0], 2)
+        elif isHex(args[0]):
+            addressNum = int(args[0], 16)
+        else: # It's a decimal
+            addressNum = int(args[0])
+        memoryDelta = addressNum - memoryDelta
+        if memoryDelta != 0:
+            outputAsm.append(assemble_orig())
     elif (op == ".WORD"):
+        outputLine = INSTR_PREFIX + numToWord(addressNum)
+        outputLine = outputLine + ADDRESS_INSTR_SEP + op
+        outputLine = outputLine + INSTR_ARG_SEP + ",".join(args).upper()
+        outputLine = outputLine + "\n" + decToHexWord(instrNum)
+        outputLine = outputLine + LINE_INSTR_SEP + args[1] + ";"
+        outputAsm.append(outputLine)
+        instrNum = instrNum + 1
+        addressNum = addressNum + INSTR_SIZE
+
+    return labelTable, addressNum, instrNum, outputAsm
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
