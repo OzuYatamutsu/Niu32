@@ -488,3 +488,7 @@ Instructs the assembler to track a new variable in memory with the name (`label`
 ##### .ORIG
 `.ORIG 0xBEEF`  <br>
 Instructs the assembler to start the following instructions at the given memory location (`0xBEEF`). The assembler will throw an error if the memory location is **not a multiple of the word size (4 bytes)**. Valid memory locations in instruction memory typically end with `0`, `4`, `8`, or `c`.
+
+##### .WORD
+`.WORD 0xBEEF`	<br>
+Instructs the assembler to put the given memory word at the assembler's currently tracked location in instruction memory (for example, if the next instruction would be placed at memory location `0x0000000c`, the assembler would place the word `0xBEEF` at that location instead).
