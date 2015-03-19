@@ -79,6 +79,10 @@ DIRECTIVES = ["NAME", "ORIG"]
 def main():
     '''The entry point of the assembler.'''
 
+    # Mark as global to access outside vars
+    global OUTPUT_FILENAME
+    global VERBOSE
+
     # Parse command-line arguments
     if (len(argv) < MIN_ARG_SIZE):
         print(ERR_INVALID_ARGS)
@@ -191,9 +195,37 @@ def assemble(inputAsm):
     unresolved = {}
 
     for line in inputAsm:
-        pass
+        line = getInstr(line)
 
     return outputAsm, labels, unresolved
+
+def getInstr(line):
+    '''Returns an instruction from an input line as a list containing the opcode/pseudo-op/directive and 
+    any arguments provided, stripped of any extra characters.'''
+
+    line = line.split("!")[0].replace("\n", "")
+
+    # If entire line is a comment, no useful code
+    if (len(line) == 0):
+        return ""
+
+    op = ""
+    result = []
+    
+    pointChar = 0
+
+    while line[pointChar] == " " or line[pointChar] == "\t":
+        pointChar = pointChar + 1
+    
+    while pointChar < len(line) and line[pointChar] != " " and line[pointChar] != "\t":
+        op = op + line[pointChar]
+        pointChar = pointChar + 1
+    
+    line = line.replace(op, "", 1).replace(" ", "").replace("\t", "")
+    result = line.split(",")
+    result.insert(0, op.upper())
+
+    return result
 
 
 def resolve_all(asm, labels, uses):
