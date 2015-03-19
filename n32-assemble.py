@@ -74,7 +74,7 @@ PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
              "BGT", "BGE", "GOTO", "JMP", "RET", 
              "PUSH", "POP"]
 
-DIRECTIVES = ["NAME", "ORIG"]
+DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
 def main():
     '''The entry point of the assembler.'''
@@ -195,13 +195,25 @@ def assemble(inputAsm):
     unresolved = {}
 
     for line in inputAsm:
-        line = getInstr(line)
+        line = get_instr(line)
+        if (is_label(line)):
+            # Add this label to our labels table and move on
+            labels[line.replace(":", "")] = decimal_to_binary(memLocation)
+        elif (is_meaningful(line)):
+            op = line[0]
+            args = line[1:len(line)]
+
+            # First, check if directive
+            if (op in DIRECTIVES):
+                handle_directive(op, args)
 
     return outputAsm, labels, unresolved
 
-def getInstr(line):
-    '''Returns an instruction from an input line as a list containing the opcode/pseudo-op/directive and 
-    any arguments provided, stripped of any extra characters.'''
+def get_instr(line):
+    '''Returns an instruction from an input line as a list 
+    containing the opcode/pseudo-op/directive and any arguments 
+    provided, stripped of any extra characters. If the input is a 
+    label, returns the label in UPPERCASE.'''
 
     line = line.split("!")[0].replace("\n", "")
 
@@ -211,7 +223,6 @@ def getInstr(line):
 
     op = ""
     result = []
-    
     pointChar = 0
 
     while line[pointChar] == " " or line[pointChar] == "\t":
@@ -227,6 +238,75 @@ def getInstr(line):
 
     return result
 
+def is_label(line):
+    '''Checks if the given line is a memory label.'''
+
+    return (":" in line)
+
+def is_hex(numString):
+    '''Checks if the given number is a hex number.'''
+
+    try: return '0x' in numString
+    except TypeError: return False
+
+def is_binary(numString):
+    '''Checks if the given number is a binary number.'''
+
+    try: return '0b' in numString and '0x' not in numString
+    except TypeError: return False
+
+def is_decimal(numString):
+    '''Checks if the given number is a decimal number.'''
+
+    try:
+        numString = int(numString)
+    except ValueError:
+        return False
+    return True
+
+def num_to_binary(numString, binLength):
+    '''Converts the given number to a binary string of given bit-length.
+    Detects whether a decimal-binary conversion or a hex-binary conversion 
+    is needed first. The input number will be treated as a signed integer.'''
+
+    if (is_binary(numString)):
+        return numString.replace("0b", "")
+    if (is_decimal(numString)):
+        return decimal_to_binary(int(numString), binLength)
+    elif (is_hex(numString)):
+        return hex_to_binary(numString, binLength)
+
+def decimal_to_binary(num, binLength):
+    '''Converts the given decimal number to a binary string of given bit-length.
+    Treats the input number as a signed integer.'''
+
+    # 2's complement negation
+    if num < 0: num = int(bin(num & int('0b' + '1' * binLength, 2)), 2)
+    output = bin(num).replace("0b", "")
+    if len(output) < binLength:
+        # Left-padding
+        output = (binLength - len(output)) * '0' + output
+    return output
+
+def hex_to_binary(hexString, numBits):
+    '''Converts the given hexidecimal number to a binary string of given bit-length.
+    Treats the input number as a signed integer.'''
+
+    output = bin(int(hexString, 16)).replace("0b", "")
+    if len(output) < numBits:
+        output = (numBits - len(output)) * '0' + output
+    return output
+
+def is_meaningful(line):
+    '''Checks if the given line has any meaningful instruction.'''
+
+    return (line != "")
+
+def handle_directive(op, args):
+    if (op == ".NAME"):
+
+    elif (op == ".ORIG"):
+    elif (op == ".WORD"):
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
