@@ -22,6 +22,7 @@ ERROR_HDR = "<error> "
 VERBOSE_HDR = "<verbose> "
 
 ### Assembler variables
+BIT_SIZE = 32 # Bits
 INSTR_SIZE = 4 # Bytes
 
 ### Error/Warning/Informational messages
@@ -87,7 +88,8 @@ BIN_CTAG = "</BIN>"
 ADDRESS_INSTR_SEP = " :"
 INSTR_ARG_SEP = "    "
 LINE_INSTR_SEP = " :"
-MEM_FILL_SYM = ".."
+HEX_PREFIX = "0x"
+BIN_PREFIX = "0b"
 
 def main():
     '''The entry point of the assembler.'''
@@ -218,7 +220,10 @@ def assemble(inputAsm):
 
             # First, check if directive
             if (op in DIRECTIVES):
-                try: handle_directive(op, args)
+                try: 
+                    labelTable, memLocation, instrNum, outputAsm = \
+                        handle_directive(op, args, labelTable, 
+                                      memLocation, instrNum, outputAsm)
                 except ValueError as origError:
                     # Problem resolving .ORIG directive
                     print(ERR_ORIG_LOC.replace("{arg1}", lineNum))
@@ -359,13 +364,15 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
                 raise ValueError(ERR_ORIG_LOC)
 
             instrNum = instrNum + int(memoryDelta / INSTR_SIZE)
-    elif (op == ".WORD"): # TODO: complete
-        outputLine = INSTR_PREFIX + numToWord(addressNum)
+    elif (op == ".WORD"):
+        outputLine = INSTR_PREFIX + HEX_PREFIX 
+        outputLIne = outputLine + decimal_to_hex(addressNum, BIT_SIZE)
         outputLine = outputLine + ADDRESS_INSTR_SEP + op
         outputLine = outputLine + INSTR_ARG_SEP + ",".join(args).upper()
-        outputLine = outputLine + "\n" + decToHexWord(instrNum)
+        outputLine = outputLine + "\n" + decimal_to_hex(instrNum, BIT_SIZE)
         outputLine = outputLine + LINE_INSTR_SEP + args[1] + ";"
         outputAsm.append(outputLine)
+
         instrNum = instrNum + 1
         addressNum = addressNum + INSTR_SIZE
 
