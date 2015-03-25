@@ -21,12 +21,16 @@ OUTPUT_EXT = ".mif"
 ERROR_HDR = "<error> "
 VERBOSE_HDR = "<verbose> "
 
+### Assembler variables
+INSTR_SIZE = 4 # Bytes
+
 ### Error/Warning/Informational messages
 ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     Valid arguments:\n
     -o [filename], --output [filename]: Output filename.
     -v, --verbose: Print verbose output."""
 ERR_NUM_ARGS = ERROR_HDR + "Invalid number of arguments.\n"
+ERR_ORIG_LOC = ERROR_HDR + "Error at line {arg1}: .ORIG to misaligned location!\n"
 VER_MAIN_COMPL = VERBOSE_HDR + """Parsing arguments complete!
     Input file: {arg1}
     Output file: {arg2}
@@ -83,6 +87,7 @@ BIN_CTAG = "</BIN>"
 ADDRESS_INSTR_SEP = " :"
 INSTR_ARG_SEP = "    "
 LINE_INSTR_SEP = " :"
+MEM_FILL_SYM = ".."
 
 def main():
     '''The entry point of the assembler.'''
@@ -213,7 +218,11 @@ def assemble(inputAsm):
 
             # First, check if directive
             if (op in DIRECTIVES):
-                handle_directive(op, args)
+                try: handle_directive(op, args)
+                except ValueError as origError:
+                    # Problem resolving .ORIG directive
+                    print(ERR_ORIG_LOC.replace("{arg1}", lineNum))
+                    _exit(-1)
 
     return outputAsm, labels, unresolved
 
@@ -296,6 +305,21 @@ def decimal_to_binary(num, binLength):
         output = (binLength - len(output)) * '0' + output
     return output
 
+def decimal_to_hex(num, hexLength):
+    '''Converts the given decimal number to a hexidecimal string of given bit-length.
+    Treats the input number as a signed integer.'''
+
+    # Length in bits to length of string
+    hexLength = hexLength / 4 
+
+    # 2's complement negation
+    if num < 0: num = int(bin(num & int('0b' + '1' * WIDTH, 2)), 2)
+    output = hex(num).replace("0x", "")
+    if len(output) < hexLength:
+        # Left-padding
+        output = (hexLength - len(output)) * '0' + output
+    return output
+
 def hex_to_binary(hexString, numBits):
     '''Converts the given hexidecimal number to a binary string of given bit-length.
     Treats the input number as a signed integer.'''
@@ -330,8 +354,12 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
             addressNum = int(args[0])
         memoryDelta = addressNum - memoryDelta
         if memoryDelta != 0:
-            outputAsm.append(assemble_orig())
-    elif (op == ".WORD"):
+            # Throw an error if we'd be jumping to misaligned memory!
+            if (address % INSTR_SIZE != 0):
+                raise ValueError(ERR_ORIG_LOC)
+
+            instrNum = instrNum + int(memoryDelta / INSTR_SIZE)
+    elif (op == ".WORD"): # TODO: complete
         outputLine = INSTR_PREFIX + numToWord(addressNum)
         outputLine = outputLine + ADDRESS_INSTR_SEP + op
         outputLine = outputLine + INSTR_ARG_SEP + ",".join(args).upper()
