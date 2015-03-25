@@ -32,6 +32,7 @@ ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     -v, --verbose: Print verbose output."""
 ERR_NUM_ARGS = ERROR_HDR + "Invalid number of arguments.\n"
 ERR_ORIG_LOC = ERROR_HDR + "Error at line {arg1}: .ORIG to misaligned location!\n"
+ERR_SYNTAX = ERROR_HDR + "Error at line {arg1}: Unexpected op, arg, or label!\n"
 VER_MAIN_COMPL = VERBOSE_HDR + """Parsing arguments complete!
     Input file: {arg1}
     Output file: {arg2}
@@ -228,6 +229,49 @@ def assemble(inputAsm):
                     # Problem resolving .ORIG directive
                     print(ERR_ORIG_LOC.replace("{arg1}", lineNum))
                     _exit(-1)
+
+            # Check if this is a dedicated instruction
+            elif (op in OP1 or op in OP2 or op in PSEUDO_OP):
+                # Memory location
+                outLine = INSTR_PREFIX + HEX_PREFIX
+                outLine = outLine + decimal_to_hex(memLocation, BIT_SIZE)
+
+                # Op
+                outLine = outLine + ADDRESS_INSTR_SEP + op
+
+                # Args
+                outLine = outLine + INSTR_ARG_SEP + ",".join(args).upper()
+
+                # Instruction number
+                outLine = outLine + "\n" + decimal_to_hex(instrNum, BIT_SIZE)
+
+                if (op in PSEUDO_OP):
+                    # Convert/expand to actual instruction
+                    # TODO: implement
+                    pass
+
+                # Assembled instruction
+                instr, unresolvedLabels = instr_assemble(
+                    op, args, memLocation, unresolvedLabels)
+                # TODO: implement instr_assemble
+
+                outLine = outLine + LINE_INSTR_SEP + instr + ";"
+
+                # Take care of overhead
+                instrNum = instrNum + 1
+                memLocation = memLocation + INSTR_SIZE
+
+                # We're done for now - commit to output queue
+                outputAsm.append(outLine)
+            else: 
+                # op was unexpected!
+                print(ERR_SYNTAX)
+                _exit(-1)
+            
+            lineNum = lineNum + 1
+            # And start the next line...
+
+    # TODO: Label resolution next
 
     return outputAsm, labels, unresolved
 
