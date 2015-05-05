@@ -222,8 +222,8 @@ def assemble(inputAsm):
             # First, check if directive
             if (op in DIRECTIVES):
                 try: 
-                    labelTable, memLocation, instrNum, outputAsm = \
-                        handle_directive(op, args, labelTable, 
+                    labels, memLocation, instrNum, outputAsm = \
+                        handle_directive(op, args, labels, 
                                       memLocation, instrNum, outputAsm)
                 except ValueError as origError:
                     # Problem resolving .ORIG directive
@@ -359,7 +359,7 @@ def decimal_to_hex(num, hexLength):
     Treats the input number as a signed integer.'''
 
     # Length in bits to length of string
-    hexLength = hexLength / 4 
+    hexLength = int(hexLength / 4)
 
     # 2's complement negation
     if num < 0: num = int(bin(num & int('0b' + '1' * WIDTH, 2)), 2)
@@ -395,16 +395,16 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
     elif (op == ".ORIG"):
         memoryDelta = addressNum 
         instrDelta = instrNum
-        if isBinary(args[0]): 
+        if is_binary(args[0]): 
             addressNum = int(args[0], 2)
-        elif isHex(args[0]):
+        elif is_hex(args[0]):
             addressNum = int(args[0], 16)
         else: # It's a decimal
             addressNum = int(args[0])
         memoryDelta = addressNum - memoryDelta
         if memoryDelta != 0:
             # Throw an error if we'd be jumping to misaligned memory!
-            if (address % INSTR_SIZE != 0):
+            if (addressNum % INSTR_SIZE != 0):
                 raise ValueError(ERR_ORIG_LOC)
 
             instrNum = instrNum + int(memoryDelta / INSTR_SIZE)
