@@ -30,6 +30,7 @@ ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
     Valid arguments:\n
     -o [filename], --output [filename]: Output filename.
     -v, --verbose: Print verbose output."""
+ERR_ALUI = ERROR_HDR + "ALUI cannot be explicitly used as an instruction."
 ERR_NUM_ARGS = ERROR_HDR + "Invalid number of arguments.\n"
 ERR_ORIG_LOC = ERROR_HDR + "Error at line {arg1}: .ORIG to misaligned location!\n"
 ERR_SYNTAX = ERROR_HDR + "Error at line {arg1}: Unexpected op, arg, or label!\n"
@@ -254,8 +255,11 @@ def assemble(inputAsm):
                         pass
 
                 # Assembled instruction
-                instr, unresolvedLabels = instr_assemble(
-                    op, args, memLocation, unresolvedLabels)
+                try:
+                    instr, unresolvedLabels = instr_assemble(
+                        op, args, memLocation, unresolvedLabels)
+                except Exception:
+                    handle_error(lineNum)
                 # TODO: implement instr_assemble
 
                 outLine = outLine + LINE_INSTR_SEP + instr + ";"
@@ -503,6 +507,61 @@ def convert_pseudo_op(op, args):
         pass
 
     return op, args
+
+def instr_assemble(op, args, memLocation, unresolvedLabels):
+    '''Assembles a Niu32 assembly instruction to hex code.'''
+    if (op in OP1):
+        if (op == "ALUI"):
+            # This should not happen!
+            raise AssertionError(ERR_ALUI)
+        if (op == "ADDI"):
+            pass
+        elif (op == "MLTI"):
+            pass
+        elif (op == "DIVI"):
+            pass
+        elif (op == "ANDI"):
+            pass
+        elif (op == "ORI"):
+            pass
+        elif (op == "XORI"):
+            pass
+        elif (op == "SULI"):
+            pass
+        elif (op == "SSLI"):
+            pass
+        elif (op == "SURI"):
+            pass
+        elif (op == "SSRI"):
+            pass
+        elif (op == "LW"):
+            pass
+        elif (op == "LB"):
+            pass
+        elif (op == "SW"):
+            pass
+        elif (op == "SB"):
+            pass
+        elif (op == "LUI"):
+            pass
+        elif (op == "BEQ"):
+            pass
+        elif (op == "BNE"):
+            pass
+        elif (op == "BLT"):
+            pass
+        elif (op == "BLE"):
+            pass
+        elif (op == "JAL"):
+            pass
+        else:
+            raise AssertionError(ERR_SYNTAX)
+    else:
+        if (op == "ADD"):
+            pass
+
+
+    pass
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
