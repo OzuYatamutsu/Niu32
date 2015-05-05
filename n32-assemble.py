@@ -247,8 +247,11 @@ def assemble(inputAsm):
 
                 if (op in PSEUDO_OP):
                     # Convert/expand to actual instruction
-                    # TODO: implement
-                    pass
+                    op, args = convert_pseudo_op(op, args)
+                    
+                    if (op is list):
+                        # TODO: What if converted to multiple instructions?
+                        pass
 
                 # Assembled instruction
                 instr, unresolvedLabels = instr_assemble(
@@ -458,7 +461,7 @@ def convert_pseudo_op(op, args):
     elif (op == "CPY"):
         op = "ADD"
         # op1 + zero = op1
-        args[2] = "$zero"
+        args.append("$zero")
     elif (op == "LA"):
         # TODO: two seperate instructions
         pass
@@ -468,8 +471,8 @@ def convert_pseudo_op(op, args):
     elif (op == "CLR"):
         op = "ADD"
         # 0 + 0 => op0
-        args[1] = "$zero"
-        args[2] = "$zero"
+        args.append("$zero")
+        args.append("$zero")
     elif (op == "BGT"):
         op = "BLT"
         # Swap args[0] and args[1]
@@ -490,8 +493,8 @@ def convert_pseudo_op(op, args):
     elif (op == "RET"):
         op = "JAL"
         # Simple alias, we don't care about return location
-        args[0] = "$zero"
-        args[1] = "$ra"
+        args.append("$zero")
+        args.append("$ra")
     elif (op == "PUSH"):
         # TODO: two seperate instructions
         pass
