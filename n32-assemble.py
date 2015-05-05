@@ -337,10 +337,19 @@ def num_to_binary(numString, binLength):
 
     if (is_binary(numString)):
         return numString.replace("0b", "")
-    if (is_decimal(numString)):
+    elif (is_decimal(numString)):
         return decimal_to_binary(int(numString), binLength)
     elif (is_hex(numString)):
         return hex_to_binary(numString, binLength)
+
+def num_to_num(numString):
+    '''Converts the given hexidecimal or binary number to an integer.'''
+
+    if (is_binary(numString)):
+        return int(numString, 2)
+    if (is_hex(numString)):
+        return int(numString, 16)
+    return int(numString)
 
 def decimal_to_binary(num, binLength):
     '''Converts the given decimal number to a binary string of given bit-length.
@@ -421,6 +430,18 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
         addressNum = addressNum + INSTR_SIZE
 
     return labelTable, addressNum, instrNum, outputAsm
+
+def convert_pseudo_op(op, args):
+    '''Converts a pseudo-op to valid Niu32 assembly code.'''
+
+    if (op == "SUBI"):
+        # Convert to ADDI
+        op == "ADDI"
+        # Negate imm
+        args[1] = num_to_binary(args[1])
+
+
+    pass
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
