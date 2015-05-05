@@ -435,41 +435,68 @@ def convert_pseudo_op(op, args):
     '''Converts a pseudo-op to valid Niu32 assembly code.'''
 
     if (op == "SUBI"):
-        # Convert to ADDI
-        op == "ADDI"
+        op = "ADDI"
         # Negate imm
         args[1] = num_to_binary(-1 * num_to_num(args[1]))
     elif (op == "GT"):
-        pass
+        op = "LT"
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "GEQ"):
-        pass
+        op = "LEQ"
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "NAND"):
+        # TODO: two seperate instructions
         pass
     elif (op == "NOR"):
+        # TODO: two seperate instructions
         pass
     elif (op == "NXOR"):
+        # TODO: two seperate instructions
         pass
     elif (op == "CPY"):
-        pass
+        op = "ADD"
+        # op1 + zero = op1
+        args[2] = "$zero"
     elif (op == "LA"):
+        # TODO: two seperate instructions
         pass
     elif (op == "LV"):
+        # TODO: two seperate instructions
         pass
     elif (op == "CLR"):
-        pass
+        op = "ADD"
+        # 0 + 0 => op0
+        args[1] = "$zero"
+        args[2] = "$zero"
     elif (op == "BGT"):
-        pass
+        op = "BLT"
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "BGE"):
-        pass
+        op = "BLE"
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "GOTO"):
-        pass
+        op = "BEQ"
+        # Unconditional branch (0 == 0)
+        args.insert(0, "$zero")
+        args.insert(0, "$zero")
     elif (op == "JMP"):
-        pass
+        op = "JAL"
+        # Simple alias
+        args.insert(0, "$ra")
     elif (op == "RET"):
-        pass
+        op = "JAL"
+        # Simple alias, we don't care about return location
+        args[0] = "$zero"
+        args[1] = "$ra"
     elif (op == "PUSH"):
+        # TODO: two seperate instructions
         pass
     elif (op == "POP"):
+        # TODO: two seperate instructions
         pass
 
     return op, args
