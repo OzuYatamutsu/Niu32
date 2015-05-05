@@ -511,7 +511,6 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
     if (op in OP1):
         if (op == "ALUI"):
-            # This should not happen!
             raise AssertionError(ERR_ALUI)
         if (op == "ADDI"):
             pass
@@ -555,12 +554,41 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
             pass
         else:
             raise AssertionError(ERR_SYNTAX)
-    else:
-        if (op == "ADD"):
+    else: # Is an OP2 instruction
+        if (op == "SUB"):
             pass
-
-
-    pass
+        elif (op == "ADD"):
+            pass
+        elif (op == "MLT"):
+            pass
+        elif (op == "DIV"):
+            pass
+        elif (op == "NOT"):
+            pass
+        elif (op == "AND"):
+            pass
+        elif (op == "OR"):
+            pass
+        elif (op == "XOR"):
+            pass
+        elif (op == "SUL"):
+            pass
+        elif (op == "SSL"):
+            pass
+        elif (op == "SUR"):
+            pass
+        elif (op == "SSR"):
+            pass
+        elif (op == "EQ"):
+            pass
+        elif (op == "NEQ"):
+            pass
+        elif (op == "LT"):
+            pass
+        elif (op == "LEQ"):
+            pass
+        else:
+            raise AssertionError(ERR_SYNTAX)
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
