@@ -226,10 +226,9 @@ def assemble(inputAsm):
                     labels, memLocation, instrNum, outputAsm = \
                         handle_directive(op, args, labels, 
                                       memLocation, instrNum, outputAsm)
-                except ValueError as origError:
+                except ValueError:
                     # Problem resolving .ORIG directive
-                    print(ERR_ORIG_LOC.replace("{arg1}", lineNum))
-                    _exit(-1)
+                    handle_error(ERR_ORIG_LOC, lineNum)
 
             # Check if this is a dedicated instruction
             elif (op in OP1 or op in OP2 or op in PSEUDO_OP):
@@ -583,6 +582,11 @@ def read_input(filename):
 
     return input
 
+def handle_error(err, lineNum):
+    '''Outputs an error and gives the line of failure before exiting.'''
+
+    print(err.replace("{arg1}", lineNum))
+    _exit(-1)
 
 # Run assembler on call!
 main()
