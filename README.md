@@ -238,9 +238,9 @@ Branches to `imm` if `$arg1` is **less than** `$arg2`; otherwise, advances to th
 Branches to `imm` if `$arg1` is **less than or equal to** `$arg2`; otherwise, advances to the next instruction.
 
 ##### JAL
-`JAL $argD, $arg1`        <br>
-**$argD <- (PC + 4), PC <- $arg1**        <br>
-Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$argD`.
+`JAL $arg1, $argD`        <br>
+**$arg1 <- (PC + 4), PC <- $argD**        <br>
+Jumps to the address of the subroutine stored in `$argD` and stores the previous next instruction as the return address in `$arg1`.
 
 ### Secondary
 
@@ -424,7 +424,7 @@ Stores the memory location of `imm` into `$argD`.<br>
 The assembler will expand this into `LUI` and `ORI` instructions.
 
 ##### LV
-`LV $argD, imm`
+`LV $argD, imm`		<br>
 **$argD <- imm**        <br>
 Stores the value of `imm` into `$argD`.<br>
 The assembler will expand this into `LUI` and `ORI` instructions.
@@ -456,13 +456,13 @@ The assembler will transform this into a `BEQ` instruction.
 ##### JMP
 `JMP $argD`        <br>
 **$ra <- (PC + 4), PC <- $argD** <br>
-Jumps to the address of the subroutine stored in `$arg1` and stores the previous next instruction as the return address in `$ra`. <br>
+Jumps to the address of the subroutine stored in `$argD` and stores the previous next instruction as the return address in `$ra`. <br>
 The assembler will transform this into a `JAL` instruction.
 
 ##### RET
 `RET`   <br>
 **PC <- $ra**   <br>
-Returns the PC to the memory location stored in the `$ra` (return address) register. <br>
+Returns the PC to the memory location stored in the `$ra` (return address) register.  *The current PC location will be lost.* <br>
 The assembler will transform this into a `JAL` instruction.
 
 ##### PUSH
