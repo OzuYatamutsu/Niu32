@@ -438,10 +438,9 @@ def convert_pseudo_op(op, args):
         # Convert to ADDI
         op == "ADDI"
         # Negate imm
-        args[1] = num_to_binary(args[1])
+        args[1] = num_to_binary(-1 * num_to_num(args[1]))
 
-
-    pass
+    return op, args
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
