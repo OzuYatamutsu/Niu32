@@ -439,6 +439,38 @@ def convert_pseudo_op(op, args):
         op == "ADDI"
         # Negate imm
         args[1] = num_to_binary(-1 * num_to_num(args[1]))
+    elif (op == "GT"):
+        pass
+    elif (op == "GEQ"):
+        pass
+    elif (op == "NAND"):
+        pass
+    elif (op == "NOR"):
+        pass
+    elif (op == "NXOR"):
+        pass
+    elif (op == "CPY"):
+        pass
+    elif (op == "LA"):
+        pass
+    elif (op == "LV"):
+        pass
+    elif (op == "CLR"):
+        pass
+    elif (op == "BGT"):
+        pass
+    elif (op == "BGE"):
+        pass
+    elif (op == "GOTO"):
+        pass
+    elif (op == "JMP"):
+        pass
+    elif (op == "RET"):
+        pass
+    elif (op == "PUSH"):
+        pass
+    elif (op == "POP"):
+        pass
 
     return op, args
 
