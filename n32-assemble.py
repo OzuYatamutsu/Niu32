@@ -263,7 +263,9 @@ def assemble(inputAsm):
 
                 if (not unresolvedMod):
                     outLine = outLine + LINE_INSTR_SEP + binary_to_hex(instr) + ";"
-                # Otherwise, we have to convert it after resolving label
+                else:
+                    # Otherwise, we have to convert it after resolving label
+                    outLine = outLine + LINE_INSTR_SEP + BIN_TAG + instr + BIN_CTAG + ";"
 
                 # Take care of overhead
                 instrNum = instrNum + 1
@@ -524,7 +526,7 @@ def convert_pseudo_op(op, args):
 
     return op, args
 
-def instr_assemble(op, args, memLocation, unresolvedLabels):
+def instr_assemble(op, args, instrNum, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
     instr = ""
     unresolvedMod = False
