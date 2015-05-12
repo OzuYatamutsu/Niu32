@@ -317,7 +317,9 @@ def get_instr(line):
 def is_label(line):
     '''Checks if the given line is a memory label.'''
 
-    return (":" in line)
+    return type(line) is not list and ((":" in line) 
+        or ((not is_hex(line)) and (not is_binary(line))  
+        and (not is_decimal(line))))
 
 def is_hex(numString):
     '''Checks if the given number is a hex number.'''
