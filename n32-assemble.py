@@ -255,10 +255,10 @@ def assemble(inputAsm):
 
                 # Assembled instruction
                 try:
-                    instr, unresolvedLabels = instr_assemble(
-                        op, args, memLocation, unresolvedLabels)
-                except Exception:
-                    handle_error(lineNum)
+                    instr, unresolved = instr_assemble(
+                        op, args, memLocation, unresolved)
+                except Exception as e:
+                    handle_error(e, lineNum)
                 # TODO: implement instr_assemble
 
                 outLine = outLine + LINE_INSTR_SEP + instr + ";"
@@ -537,8 +537,8 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
                 # Convert imm
                 instr = instr + num_to_binary(args[2], 17)
     elif (op in OP2):
-        # Convert op
-        instr = instr + OP2[op]
+        # OP1 is ALUI
+        instr = instr + OP1["ALUI"]
 
         # Convert arg1
         instr = instr + REGS[args[1]]
@@ -548,6 +548,12 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
 
         # Convert argd
         instr = instr + REGS[args[0]]
+
+        # 7'b0 blank field
+        intr = instr + '0000000'
+
+        # Convert op as op2
+        instr = instr + OP2[op]
     else: raise AssertionError(ERR_SYNTAX)
 
     return instr, unresolvedLabels
