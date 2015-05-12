@@ -254,14 +254,18 @@ def assemble(inputAsm):
                         pass
 
                 # Assembled instruction
+
                 try:
-                    instr, unresolved = instr_assemble(
+                    instr, unresolved, unresolvedMod = instr_assemble(
                         op, args, memLocation, unresolved)
                 except Exception as e:
                     handle_error(e, lineNum)
-                # TODO: implement instr_assemble
 
-                outLine = outLine + LINE_INSTR_SEP + instr + ";"
+                if (not unresolvedMod):
+                    outLine = outLine + LINE_INSTR_SEP + binary_to_hex(instr) + ";"
+                else:
+                    # We can't convert it to hex right now
+                    pass
 
                 # Take care of overhead
                 instrNum = instrNum + 1
@@ -392,6 +396,17 @@ def hex_to_binary(hexString, numBits):
     if len(output) < numBits:
         output = (numBits - len(output)) * '0' + output
     return output
+
+def binary_to_hex(binString):
+    '''Converts the given binary number to a hex string.'''
+
+    hexLength = int(len(binString) / 4)
+    output = hex(int(binString, 2)).replace("0x", "")
+    if len(output) < hexLength:
+        # Left-padding
+        output = (hexLength - len(output)) * '0' + output
+    return output
+
 
 def is_meaningful(line):
     '''Checks if the given line has any meaningful instruction.'''
@@ -550,7 +565,7 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
         instr = instr + REGS[args[0]]
 
         # 7'b0 blank field
-        intr = instr + '0000000'
+        instr = instr + '0000000'
 
         # Convert op as op2
         instr = instr + OP2[op]
