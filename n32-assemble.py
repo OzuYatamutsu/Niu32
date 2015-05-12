@@ -215,7 +215,7 @@ def assemble(inputAsm):
         line = get_instr(line)
         if (is_label(line)):
             # Add this label to our labels table and move on
-            labels[line.replace(":", "")] = decimal_to_binary(memLocation)
+            labels[line.replace(":", "")] = decimal_to_binary(memLocation, 32)
         elif (is_meaningful(line)):
             op = line[0]
             args = line[1:len(line)]
@@ -294,7 +294,6 @@ def get_instr(line):
     # If entire line is a comment, no useful code
     if (len(line) == 0):
         return ""
-
     op = ""
     result = []
     pointChar = 0
@@ -309,6 +308,9 @@ def get_instr(line):
     line = line.replace(op, "", 1).replace(" ", "").replace("\t", "")
     result = line.split(",")
     result.insert(0, op.upper())
+
+    if (":" in op):
+        return op.upper()
 
     return result
 
