@@ -49,17 +49,17 @@ VER_STG4_END = VERBOSE_HDR + "[Stage 4] File write complete!"
 ASSEMBLY_END = "Assembly complete! Wrote to {arg1}"
 
 ### Lookup tables
-REGS = {"zero": "00000", "a0": "00001", "a1": "00010", 
-        "a2": "00011", "a3": "00100", "t0": "00101", 
-        "t1": "00110", "t2": "00111", "t3": "01000", 
-        "t4": "01001", "t5": "01010", "t6": "01011", 
-        "t7": "01100", "s0": "01101", "s1": "01110",
-        "s2": "01111", "s3": "10000", "s4": "10001", 
-        "s5": "10010", "s6": "10011", "s7": "10100", 
-        "r0": "10101", "r1": "10110", "r2": "10111", 
-        "r3": "11000", "ra": "11001", "gp": "11010", 
-        "fp": "11011", "sp": "11100", "at": "11101", 
-        "k0": "11110", "k1": "11111"}
+REGS = {"$zero": "00000", "$a0": "00001", "$a1": "00010", 
+        "$a2": "00011", "$a3": "00100", "$t0": "00101", 
+        "$t1": "00110", "$t2": "00111", "$t3": "01000", 
+        "$t4": "01001", "$t5": "01010", "$t6": "01011", 
+        "$t7": "01100", "$s0": "01101", "$s1": "01110",
+        "$s2": "01111", "$s3": "10000", "$s4": "10001", 
+        "$s5": "10010", "$s6": "10011", "$s7": "10100", 
+        "$r0": "10101", "$r1": "10110", "$r2": "10111", 
+        "$r3": "11000", "$ra": "11001", "$gp": "11010", 
+        "$fp": "11011", "$sp": "11100", "$at": "11101", 
+        "$k0": "11110", "$k1": "11111"}
 
 OP1 = {"ALUI": "00000", "ADDI": "00001", "MLTI": "00010", 
        "DIVI": "00011", "ANDI": "00101", "ORI": "00110", 
@@ -509,87 +509,43 @@ def convert_pseudo_op(op, args):
 
 def instr_assemble(op, args, memLocation, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
+    instr = ""
     if (op in OP1):
         if (op == "ALUI"):
             raise AssertionError(ERR_ALUI)
-        if (op == "ADDI"):
-            pass
-        elif (op == "MLTI"):
-            pass
-        elif (op == "DIVI"):
-            pass
-        elif (op == "ANDI"):
-            pass
-        elif (op == "ORI"):
-            pass
-        elif (op == "XORI"):
-            pass
-        elif (op == "SULI"):
-            pass
-        elif (op == "SSLI"):
-            pass
-        elif (op == "SURI"):
-            pass
-        elif (op == "SSRI"):
-            pass
-        elif (op == "LW"):
-            pass
-        elif (op == "LB"):
-            pass
-        elif (op == "SW"):
-            pass
-        elif (op == "SB"):
-            pass
         elif (op == "LUI"):
-            pass
-        elif (op == "BEQ"):
-            pass
-        elif (op == "BNE"):
-            pass
-        elif (op == "BLT"):
-            pass
-        elif (op == "BLE"):
             pass
         elif (op == "JAL"):
             pass
         else:
-            raise AssertionError(ERR_SYNTAX)
-    else: # Is an OP2 instruction
-        if (op == "SUB"):
-            pass
-        elif (op == "ADD"):
-            pass
-        elif (op == "MLT"):
-            pass
-        elif (op == "DIV"):
-            pass
-        elif (op == "NOT"):
-            pass
-        elif (op == "AND"):
-            pass
-        elif (op == "OR"):
-            pass
-        elif (op == "XOR"):
-            pass
-        elif (op == "SUL"):
-            pass
-        elif (op == "SSL"):
-            pass
-        elif (op == "SUR"):
-            pass
-        elif (op == "SSR"):
-            pass
-        elif (op == "EQ"):
-            pass
-        elif (op == "NEQ"):
-            pass
-        elif (op == "LT"):
-            pass
-        elif (op == "LEQ"):
-            pass
-        else:
-            raise AssertionError(ERR_SYNTAX)
+            # Convert op
+            instr = instr + OP1[op]
 
+            # Convert arg1
+            instr = instr + REGS[args[1]]
+
+            # Convert argd
+            instr = instr + REGS[args[0]]
+
+            # TODO: convert label -> imm if necessary
+
+            # Convert imm
+            instr = instr + num_to_binary(args[2], 17)
+    elif (op in OP2):
+        # Convert op
+        instr = instr + OP2[op]
+
+        # Convert arg1
+        instr = instr + REGS[args[1]]
+
+        # Convert arg2
+        instr = instr + REGS[args[2]]
+
+        # Convert argd
+        instr = instr + REGS[args[0]]
+    else: raise AssertionError(ERR_SYNTAX)
+
+    return instr
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
