@@ -527,10 +527,15 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
             # Convert argd
             instr = instr + REGS[args[0]]
 
-            # TODO: convert label -> imm if necessary
+            if (is_label(args[2])):
+                # Add to unresolvedLabels
+                unresolvedLabels.append(args[2])
 
-            # Convert imm
-            instr = instr + num_to_binary(args[2], 17)
+                # ...and put a placeholder instead for imm
+                instr = instr + args[2]
+            else:
+                # Convert imm
+                instr = instr + num_to_binary(args[2], 17)
     elif (op in OP2):
         # Convert op
         instr = instr + OP2[op]
@@ -545,7 +550,8 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
         instr = instr + REGS[args[0]]
     else: raise AssertionError(ERR_SYNTAX)
 
-    return instr
+    return instr, unresolvedLabels
+
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
