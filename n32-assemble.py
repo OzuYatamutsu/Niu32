@@ -87,9 +87,9 @@ DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 INSTR_PREFIX = "-- @ "
 BIN_TAG = "<BIN>"
 BIN_CTAG = "</BIN>"
-ADDRESS_INSTR_SEP = " :"
-INSTR_ARG_SEP = "    "
-LINE_INSTR_SEP = " :"
+ADDRESS_INSTR_SEP = " : "
+INSTR_ARG_SEP = "   "
+LINE_INSTR_SEP = " : "
 HEX_PREFIX = "0x"
 BIN_PREFIX = "0b"
 
@@ -257,15 +257,13 @@ def assemble(inputAsm):
 
                 try:
                     instr, unresolved, unresolvedMod = instr_assemble(
-                        op, args, memLocation, unresolved)
+                        op, args, instrNum, unresolved)
                 except Exception as e:
                     handle_error(e, lineNum)
 
                 if (not unresolvedMod):
                     outLine = outLine + LINE_INSTR_SEP + binary_to_hex(instr) + ";"
-                else:
-                    # We can't convert it to hex right now
-                    pass
+                # Otherwise, we have to convert it after resolving label
 
                 # Take care of overhead
                 instrNum = instrNum + 1
@@ -525,6 +523,8 @@ def convert_pseudo_op(op, args):
 def instr_assemble(op, args, memLocation, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
     instr = ""
+    unresolvedMod = False
+
     if (op in OP1):
         if (op == "ALUI"):
             raise AssertionError(ERR_ALUI)
@@ -544,10 +544,13 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
 
             if (is_label(args[2])):
                 # Add to unresolvedLabels
-                unresolvedLabels.append(args[2])
+                unresolvedLabels[args[2]] = instrNum
 
                 # ...and put a placeholder instead for imm
                 instr = instr + args[2]
+
+                # ...and flag that we must resolve label later
+                unresolvedMod = True
             else:
                 # Convert imm
                 instr = instr + num_to_binary(args[2], 17)
@@ -571,7 +574,7 @@ def instr_assemble(op, args, memLocation, unresolvedLabels):
         instr = instr + OP2[op]
     else: raise AssertionError(ERR_SYNTAX)
 
-    return instr, unresolvedLabels
+    return instr, unresolvedLabels, unresolvedMod
 
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
