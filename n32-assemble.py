@@ -194,7 +194,7 @@ def assemble(inputAsm):
     a dict of labels and a dict of unresolved uses of those labels.'''
 
     # Output program, as a line-by-line list
-    outputAsm = []
+    outputAsm = {}
 
     # Line number in the input file
     lineNum = 0
@@ -262,17 +262,17 @@ def assemble(inputAsm):
                     handle_error(e, lineNum)
 
                 if (not unresolvedMod):
-                    outLine = outLine + LINE_INSTR_SEP + binary_to_hex(instr) + ";"
+                    outLine = outLine + LINE_INSTR_SEP + binary_to_hex_word(instr) + ";"
                 else:
                     # Otherwise, we have to convert it after resolving label
                     outLine = outLine + LINE_INSTR_SEP + BIN_TAG + instr + BIN_CTAG + ";"
 
+                # We're done for now - commit to output queue
+                outputAsm[instrNum] = outLine
+
                 # Take care of overhead
                 instrNum = instrNum + 1
                 memLocation = memLocation + INSTR_SIZE
-
-                # We're done for now - commit to output queue
-                outputAsm.append(outLine)
             else: 
                 # op was unexpected!
                 print(ERR_SYNTAX)
@@ -281,7 +281,8 @@ def assemble(inputAsm):
             lineNum = lineNum + 1
             # And start the next line...
 
-    # TODO: Label resolution next
+    # Resolve labels
+    outputAsm = resolve_all(outputAsm, labels, unresolved)
 
     return outputAsm, labels, unresolved
 
@@ -401,10 +402,11 @@ def hex_to_binary(hexString, numBits):
         output = (numBits - len(output)) * '0' + output
     return output
 
-def binary_to_hex(binString):
+def binary_to_hex_word(binString):
     '''Converts the given binary number to a hex string.'''
 
-    hexLength = int(len(binString) / 4)
+    binString = binString.replace("0b", "")
+    hexLength = int(BIT_SIZE / 4)
     output = hex(int(binString, 2)).replace("0x", "")
     if len(output) < hexLength:
         # Left-padding
@@ -586,7 +588,54 @@ def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
 
-    pass
+    for use in uses:
+        # Resolve offset
+        asm[uses[use]] = asm[uses[use]].replace(
+            use,
+            resolve(
+                hex_to_binary(find_asm_mem_loc(asm[uses[use]]), 32),
+                labels[use.upper()]
+            )
+        )
+
+        # Now assemble instruction to hex
+        hex_out = get_between(BIN_TAG, BIN_CTAG, asm[uses[use]])
+        hex_out = binary_to_hex_word(hex_out)
+
+        # And commit back
+        asm[uses[use]] = replace_between(BIN_TAG, BIN_CTAG, 
+                                         hex_out, asm[uses[use]])
+
+    return asm
+
+def resolve(current, remote):
+    '''Outputs an offset difference between the remote and current location, 
+    as a hexidecimal number.'''
+
+    offset = int(current, 2) - int(remote, 2)
+    length = len(current) if len(current) > len(remote) else len(remote)
+    if offset < 0: return bin(offset & int('0b' + '1' * length, 2)).replace("0b", "")
+    else: return bin(offset).replace("0b", "")
+
+def find_asm_mem_loc(line):
+    '''Returns the memory location of an assembled instruction.'''
+
+    return line[5:15]
+
+def get_between(startTag, endTag, input):
+    '''Gets the text between two tags.'''
+
+    strSplit = [input.split(startTag)[0]]
+    strSplit = strSplit + input.split(startTag)[1].split(endTag)
+    
+    return strSplit[1]
+
+def replace_between(start_tag, end_tag, new_text, input):
+    '''Replaces the text between two tags.'''
+
+    return input.replace(
+        input.split(start_tag)[1], new_text
+    ).replace(end_tag, "")
 
 def output_file(output):
     '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
