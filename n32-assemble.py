@@ -592,10 +592,11 @@ def resolve_all(asm, labels, uses):
         # Resolve offset
         asm[uses[use]] = asm[uses[use]].replace(
             use,
-            resolve(
-                hex_to_binary(find_asm_mem_loc(asm[uses[use]]), 32),
-                labels[use.upper()]
-            )
+            trim(
+                resolve(
+                    hex_to_binary(find_asm_mem_loc(asm[uses[use]]), 32),
+                    labels[use.upper()]
+                ), 17)
         )
 
         # Now assemble instruction to hex
@@ -635,7 +636,36 @@ def replace_between(start_tag, end_tag, new_text, input):
 
     return input.replace(
         input.split(start_tag)[1], new_text
-    ).replace(end_tag, "")
+    ).replace(start_tag, "")
+
+def binary_to_signed_decimal(binString):
+    '''Converts a binary string to a signed decimal number.'''
+
+    binString = binString.replace("0b", "")
+    if binString[0] != '1': return int(binString, 2)
+    else: return -1 * ((int(binString, 2) ^ int('0b' + '1' * len(binString), 2)) + 1)
+
+def trim(binString, numBits):
+    '''Trims leading 0s so that binString is length numBits.'''
+
+    binString = binString.replace("0b", "")
+
+    if len(binString) < numBits:
+        binString = (numBits - len(binString)) * '0' + binString
+
+    decValue = binary_to_signed_decimal(binString)
+    if decValue > (2**numBits - 1): 
+        raise Exception("Target address is too far away!")
+
+    if decValue < 0: binString = bin(decValue & int('0b' + '1' * numBits, 2))
+    else: binString = bin(decValue)
+    binString = binString.replace("0b", "")
+
+    # And check again
+    if len(binString) < numBits:
+        binString = (numBits - len(binString)) * '0' + binString
+
+    return binString
 
 def output_file(output):
     '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
