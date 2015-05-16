@@ -97,6 +97,7 @@ DEPTH=2048;
 ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 CONTENT BEGIN"""
+IMEM_END = "END;"
 
 def main():
     '''The entry point of the assembler.'''
@@ -608,7 +609,7 @@ def resolve_all(asm, labels, uses):
 
         # And commit back
         asm[uses[use]] = replace_between(BIN_TAG, BIN_CTAG, 
-                                         hex_out, asm[uses[use]])
+                                         hex_out, asm[uses[use]]) + ";"
 
     return asm
 
