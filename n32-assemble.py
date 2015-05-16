@@ -281,9 +281,7 @@ def assemble(inputAsm):
             lineNum = lineNum + 1
             # And start the next line...
 
-    # Resolve labels
-    outputAsm = resolve_all(outputAsm, labels, unresolved)
-
+    # Note: Output is NOT complete! Must resolve labels!
     return outputAsm, labels, unresolved
 
 def get_instr(line):
@@ -670,7 +668,9 @@ def trim(binString, numBits):
 def output_file(output):
     '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
 
-    pass
+    with open(OUTPUT_FILENAME, "w") as f:
+        for line in list(output.values()):
+            f.write(line)
 
 def read_input(filename):
     '''Reads the input assembly program into a list.'''
