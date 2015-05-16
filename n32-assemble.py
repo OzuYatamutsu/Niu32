@@ -92,6 +92,11 @@ INSTR_ARG_SEP = "   "
 LINE_INSTR_SEP = " : "
 HEX_PREFIX = "0x"
 BIN_PREFIX = "0b"
+IMEM_PREAMBLE = """WIDTH=""" + str(BIT_SIZE) + """;
+DEPTH=2048;
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+CONTENT BEGIN"""
 
 def main():
     '''The entry point of the assembler.'''
@@ -237,10 +242,10 @@ def assemble(inputAsm):
                 outLine = outLine + decimal_to_hex(memLocation, BIT_SIZE)
 
                 # Op
-                outLine = outLine + ADDRESS_INSTR_SEP + op
+                outLine = outLine + ADDRESS_INSTR_SEP + INSTR_ARG_SEP + op
 
                 # Args
-                outLine = outLine + INSTR_ARG_SEP + ",".join(args).upper()
+                outLine = outLine + " " + ",".join(args).upper()
 
                 # Instruction number
                 outLine = outLine + "\n" + decimal_to_hex(instrNum, BIT_SIZE)
@@ -669,6 +674,7 @@ def output_file(output):
     '''Outputs an assembled program into an output file (OUTPUT_FILENAME).'''
 
     with open(OUTPUT_FILENAME, "w") as f:
+        f.write(IMEM_PREAMBLE + "\n")
         for line in list(output.values()):
             f.write(line + "\n")
 
