@@ -186,7 +186,7 @@ def main():
     if VERBOSE: print(VER_STG4_END)
 
     # Assembly complete!
-    print(ASSEMBLY_END)
+    print(ASSEMBLY_END.replace("{arg1}", OUTPUT_FILENAME))
 
 def assemble(inputAsm):
     '''Performs a line-by-line assembly of the input assembly program 
@@ -670,7 +670,7 @@ def output_file(output):
 
     with open(OUTPUT_FILENAME, "w") as f:
         for line in list(output.values()):
-            f.write(line)
+            f.write(line + "\n")
 
 def read_input(filename):
     '''Reads the input assembly program into a list.'''
