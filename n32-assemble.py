@@ -678,6 +678,7 @@ def output_file(output):
         f.write(IMEM_PREAMBLE + "\n")
         for line in list(output.values()):
             f.write(line + "\n")
+        f.write(IMEM_END)
 
 def read_input(filename):
     '''Reads the input assembly program into a list.'''
