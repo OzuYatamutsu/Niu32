@@ -613,7 +613,7 @@ def resolve(current, remote):
     '''Outputs an offset difference between the remote and current location, 
     as a hexidecimal number.'''
 
-    offset = int(remote, 2) - int(current, 2)
+    offset = int(((int(remote, 2) - int(current, 2)) / INSTR_SIZE) - 1)
     length = len(current) if len(current) > len(remote) else len(remote)
     if offset < 0: return bin(offset & int('0b' + '1' * length, 2)).replace("0b", "")
     else: return bin(offset).replace("0b", "")
