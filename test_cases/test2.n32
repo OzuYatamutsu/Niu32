@@ -1,0 +1,16 @@
+! Niu32 test case 2
+
+! Passes test case if:
+! Program starts at location 0x10
+! $t3 holds 0x1 at end
+! $t4 holds 0x0 at end
+
+.ORIG 0x10            ! Skip the first four instr
+.WORD 0xBEEF		  ! Stores 0xBEEF at 0x4
+.NAME stak 0xffffffff ! Sets stak = 0xffffffff
+
+CLR $t0               ! t0 = 0
+SUBI $t1, $zero, 0x2  ! t1 = 0 - 2
+GT $t3, $t0, $t1	  ! t3 = 1 (b/c t0 > t1)
+LT $t4, $t0, $t1	  ! t4 = 0 (b/c t0 NOT < t1)
+LV $sp, stak		  ! $sp <- stak
