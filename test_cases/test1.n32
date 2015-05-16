@@ -1,7 +1,7 @@
 ! Niu32 test case 1
 
 ! Passes test case if:
-! Program starts at location 0x1
+! Program starts at location 0x4
 ! $t0 holds 0x0 at end
 ! $t1 holds 0x2 at end
 ! $t2 does NOT hold 0xff at end
