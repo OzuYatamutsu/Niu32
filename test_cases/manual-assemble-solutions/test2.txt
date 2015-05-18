@@ -1,0 +1,47 @@
+CLR $t0 is
+ADD $t0, $zero, $zero
+0000 0000 0000 0000 0110 0000 0000 0001
+ALUI--ZERO--ZERO--T0-----7'b0----ADD---
+00000000000000000101000000000001 = 0x00005001
+
+SUBI $t1, $zero, 0x2 is
+ADDI $t1, $zero, -2
+
+
+
+GT $t3, $t0, $t1 is
+LT $t3, $t1, $t0
+
+
+
+LT $t4, $t0, $t1
+
+
+LV $sp, stak is
+LUI $at, stak
+
+and 
+ORI $sp, $at, stak
+
+PUSH $t3 is
+SW $t3, $sp, 0
+
+and
+ADDI $sp, $sp, -1
+
+POP $t0 is
+ADDI $sp, $sp, 1
+
+and
+LW $t3, $sp, 0
+
+
+CPY $t0, $t2 is
+ADD $t0, $t2, $zero
+
+
+LA $t5, stak is
+LUI $at, 0x8
+
+and
+ORI $sp, $at, 0x8
