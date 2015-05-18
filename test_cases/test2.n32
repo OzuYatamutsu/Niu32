@@ -2,8 +2,12 @@
 
 ! Passes test case if:
 ! Program starts at location 0x10
+! $t0 holds 0x1 at end
+! $t1 holds 0xfffffffe at end
+! $t2 holds 0x1 at end
 ! $t3 holds 0x1 at end
 ! $t4 holds 0x0 at end
+! $t5 holds 0x8 at end
 
 .ORIG 0x10            ! Skip the first four instr
 .WORD 0xBEEF		  ! Stores 0xBEEF at 0x4
@@ -14,3 +18,7 @@ SUBI $t1, $zero, 0x2  ! t1 = 0 - 2
 GT $t3, $t0, $t1	  ! t3 = 1 (b/c t0 > t1)
 LT $t4, $t0, $t1	  ! t4 = 0 (b/c t0 NOT < t1)
 LV $sp, stak		  ! $sp <- stak
+PUSH $t3			  ! Pushes 1 onto the stack
+POP $t0				  ! Pops 1 into $t0
+CPY $t0, $t2		  ! Copies 1 from $t0 -> $t2
+LA $t5, stak		  ! Stores $t5 <- 0x8
