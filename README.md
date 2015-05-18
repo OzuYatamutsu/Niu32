@@ -195,7 +195,7 @@ Signed right-shifts `$arg1` by `imm` and stores the result in `$argD`.
 ##### LW
 `LW $argD, $arg1, imm`          <br>
 **$argD <- Mem[$arg1 + 4*imm]**       <br>
-Loads the word at the memory location computed by adding `$arg1` and `imm` into `$argD`.
+Loads the word at the memory location computed by adding `$arg2` and `imm` into `$argD`.
 
 ##### LB
 `LB $argD, $arg1, imm`      <br>
@@ -203,9 +203,9 @@ Loads the word at the memory location computed by adding `$arg1` and `imm` into 
 Loads the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. Note that the byte will be sign-extended to 32 bits before being stored in `$argD`.
 
 ##### SW
-`LW $arg1, $arg2, imm`          <br>
+`SW $arg1, $arg2, imm`          <br>
 **Mem[$arg2 + 4*imm] <- $arg1**       <br>
-Stores the word in `$arg1` at the memory location computed by adding `$arg1` and `imm` into `$argD`.
+Stores the word in `$arg1` at the memory location computed by adding `$arg2` and `imm` into `$argD`.
 
 ##### SB
 `SB $argD, $arg1, imm`      <br>
