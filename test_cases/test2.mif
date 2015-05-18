@@ -1,0 +1,39 @@
+WIDTH=32;
+DEPTH=2048;
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+CONTENT BEGIN
+-- @ 0x00000010 :    GOTO START
+00000003 : c0000001;
+-- @ 0x00000014 :    .WORD 0XBEEF
+00000005 : 0000beef;
+-- @ 0x00000018 :    CLR $T0
+00000005 : 00005001;
+-- @ 0x0000001c :    SUBI $t1,$zero,0x2
+00000006 : 080dfffe;
+-- @ 0x00000020 :    GT $t3, $t0, $t1
+00000007 : 018a8012;
+-- @ 0x00000024 :    LT $t4, $t0, $t1
+00000008 : 014c9012;
+-- @ 0x00000028 :    LV.1 $sp, stak
+00000009 : b03affff;
+-- @ 0x0000002c :    LV.2 $sp, stak
+0000000a : 3779ffff;
+-- @ 0x00000030 :    PUSH.1 $t3
+0000000b : 9f100000;
+-- @ 0x00000034 :    PUSH.2 $t3
+0000000c : 0f39ffff;
+-- @ 0x00000038 :    POP.1 $t0
+0000000d : 0f380001;
+-- @ 0x0000003c :    POP.2 $t0
+0000000e : 87100000;
+-- @ 0x00000040 :    CPY $t0, $t2
+0000000f : 01c05001;
+-- @ 0x00000044 :    LA.1 $t5, stak
+00000010 : b03a0000;
+-- @ 0x00000048 :    LA.2 $t5, stak
+00000011 : 3778000e;
+END;
+
+-- Note: This program was manually assembled
+-- by hand, based on test2.n32. Diff this to test!
