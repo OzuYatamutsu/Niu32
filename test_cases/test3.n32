@@ -1,0 +1,18 @@
+! Niu32 test case 2
+
+! Passes test case if:
+! $t0 holds 0x1 at end
+! $t1 holds 0x2 at end
+! $t2 holds 0x3 at end
+
+ADDI $t0, $zero, 0x3		! Store t0 <- 0x3
+ADDI $t1, $zero, 2			! Store t1 <- 2
+CPY $t2, $t0				! Copy t2 <- t0 (0x3)
+MLT $t0, $t1, $t0			! t0 <- (2x3)
+MLTI $t0, $t1, 0b11			! t0 <- (2x2)
+DIV $t0, $t0, $t1			! t0 <- (4/2)
+SSLI $t0, $t0, 1			! t0 <- (2 <<< 1)
+SSR $t0, $t0, $t1			! t0 <- (4 >>> 2)
+DIVI $t0, $t0, 1			! t0 <- (1/1)
+ANDI $t0, $t0, 0b1011		! t0 <- (0b1011 & 0001)
+! End
