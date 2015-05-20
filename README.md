@@ -200,17 +200,17 @@ Loads the word at the memory location computed by adding `$arg2` and `imm` into 
 ##### LB
 `LB $argD, $arg1, imm`      <br>
 **$argD <- Mem[$arg1 + imm]**       <br>
-Loads the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. Note that the byte will be sign-extended to 32 bits before being stored in `$argD`.
+Loads the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. In this case, `imm` acts as a *word offset* (i.e. `$arg1` + `imm` **bytes**). Note that the byte will be sign-extended to 32 bits before being stored in `$argD`.
 
 ##### SW
 `SW $arg1, $arg2, imm`          <br>
 **Mem[$arg2 + 4*imm] <- $arg1**       <br>
-Stores the word in `$arg1` at the memory location computed by adding `$arg2` and `imm` into `$argD`.
+Stores the word in `$arg1` at the memory location computed by adding `$arg2` and `imm`.
 
 ##### SB
-`SB $argD, $arg1, imm`      <br>
+`SB $arg1, $arg2, imm`      <br>
 **Mem[$arg2 + imm] <- $arg1**       <br>
-Stores the byte at the memory location computed by adding `$arg1` and `imm` into `$argD`. The value in `$arg1` will be shrunk into an 8-bit value before being stored in memory, which may result in undefined behavior if the value does not fit into 8 bits.
+Stores the byte in `$arg1` at the memory location computed by adding `$arg2` and `imm`. In this case, `imm` acts as a *word offset* (i.e. `$arg1` + `imm` **bytes**). The value in `$arg1` will be shrunk into an 8-bit value before being stored in memory, which may result in undefined behavior if the value does not fit into 8 bits.
 
 ##### LUI
 `LUI $argD, imm`        <br>
