@@ -278,9 +278,9 @@ Multiplies `$arg1` by `$arg2` and stores the result in `$argD`.
 Divides `$arg1` by `$arg2` and stores the result in `$argD`.
 
 ##### NOT
-`NOT $argD, $arg1, $arg2`       <br>
-**$argD <- $arg1 ~ $arg2**    <br>
-Performs a bitwise NOT on `$arg1` and `$arg2`, and stores the result in `$argD`.
+`NOT $argD, $arg1`       <br>
+**$argD <- ~$arg1**    <br>
+Performs a bitwise NOT on `$arg1`, and stores the result in `$argD`.
 
 ##### AND
 `AND $argD, $arg1, $arg2`       <br>
