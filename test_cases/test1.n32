@@ -22,3 +22,4 @@ error:
  ADD $t2, $t1, $zero   ! t2 = 0xff
 success:
  SUB $t0, $t0, $t1     ! t0 = 0
+! End
