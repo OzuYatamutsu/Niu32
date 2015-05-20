@@ -1,0 +1,26 @@
+! Niu32 test case 5
+
+! Passes test case if:
+! $t0 holds memory address at end
+! $t1 holds 0x0 at end
+! $t2 does NOT hold 0xf at end
+! $t2 holds 0x0 at end
+! $r0 holds 0x80000000 at end
+
+CLR $t2						! t2 = 0
+LA $t0, subr				! t0 <- address(subr)
+ADDI $r0, $zero, 1			! Store r0 <- 1
+JMP $t0						! Jumps to subr
+GEQ $t2, $r0, $zero			! If failure, t2 <- 1
+BEQ $t2, $zero, success		! ...and jump to success
+error:
+ ADDI $t2, $zero, 0xf		! t2 <- 0xf
+subr:
+ SULI $r0, $r0, 31			! (1 << 31) = -2147482648
+ SSRI $r0, $r0, 1			! (-2147482648 >>> 1) = -1073741824
+ RET						! Return
+success:
+ NAND $t1, $zero, $zero		! ~(0 & 0) = -1 -> t1
+ NXOR $t1, $t1, $t1			! ~(-1 xor -1) = -1 -> t1
+ NOR $t1, $t1, $t1			! ~(-1 | -1) = 0 -> t1
+! End
