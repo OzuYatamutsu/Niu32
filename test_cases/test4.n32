@@ -1,0 +1,25 @@
+! Niu32 test case 4
+
+! Passes test case if:
+! $t0 holds 0xffffffff at end
+! $t1 does NOT hold 0xf or 0x10 at end
+! $t1 holds 0x1 at end
+
+CLR $t1						! t1 = 0
+XORI $t0, $zero, 0b1		! Stores t0 <- 1
+BNE $t0, $t0, error			! Goto error if (1 != 1)
+BGT $zero, $t0, error		! Goto error if (0 > 1)
+BGE $t0, $zero, next		! Goto next if (1 >= 0)
+error:
+ ADDI $t1, $zero, 0xf		! Stores t1 <- 0xf
+next:
+ SSL $t0, $t0, $t0			! t0 <- (1 <<< 1 = 2)
+ SUR $t0, $t0, $t0			! t0 <- (2 >>> 2 = 0)
+ EQ $t0, $zero, $t0			! t0 <- (0 == 0 = 1)
+ NEQ $t0, $zero, $t0		! t0 <- (1 != 0 = 1)
+ OR $t0, $zero, $t0			! t0 <- (0 | 1 = 1)
+ XOR $t0, $t0, $t0			! t0 <- (1 xor 1 = 0)
+ AND $t0, $t0, $t0			! t0 <- (0 & 0 = 0)
+ NOT $t0, $t0				! t0 <- (~0 = -1)
+ ADDI $t1, $t1, 1			! t1 <- (0 + 1) = 1
+! End
