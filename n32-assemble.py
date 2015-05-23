@@ -81,6 +81,10 @@ PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
              "BGT", "BGE", "GOTO", "JMP", "RET", 
              "PUSH", "POP"]
 
+TWO_STG_PSEUDO_OP = ["NAND.2", "NOR.2", "NXOR.2", 
+                     "LA.2", "LV.2", "PUSH.2", 
+                     "POP.2"]
+
 DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
 ### Memory symbols
@@ -237,7 +241,7 @@ def assemble(inputAsm):
                     handle_error(ERR_ORIG_LOC, lineNum)
 
             # Check if this is a dedicated instruction
-            elif (op in OP1 or op in OP2 or op in PSEUDO_OP):
+            elif (op in OP1 or op in OP2 or op in PSEUDO_OP or op in TWO_STG_PSEUDO_OP):
                 # Memory location
                 outLine = INSTR_PREFIX + HEX_PREFIX
                 outLine = outLine + decimal_to_hex(memLocation, BIT_SIZE)
@@ -256,8 +260,12 @@ def assemble(inputAsm):
                     op, args = convert_pseudo_op(op, args)
                     
                     if (op is list):
-                        # TODO: What if converted to multiple instructions?
-                        pass
+                        # If converted to multiple instructions, this is two-stage pseudo-op
+                        # Process second stage next
+                        inputAsm.append(inputAsm.index(line) + 1)
+
+                elif (op in TWO_STG_PSEUDO_OP):
+                    op, args = convert_two_stg_psuedo_op(op, args)
 
                 # Assembled instruction
 
@@ -531,6 +539,11 @@ def convert_pseudo_op(op, args):
         pass
 
     return op, args
+
+def convert_two_stg_pseudo_op(op, args):
+    '''Converts a second-stage pseudo-op to valid Niu32 assembly code.'''
+
+    pass
 
 def instr_assemble(op, args, instrNum, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
