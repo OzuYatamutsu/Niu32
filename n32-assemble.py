@@ -475,25 +475,48 @@ def convert_pseudo_op(op, args):
 
     # Check if the op is two-stage
     if (op in TWO_STG_PSEUDO_OP):
+        # Process stage 1 here
         if (op == "NAND"):
+            # NAND arg1, arg2, arg3 is
+
+            # AND arg1, arg2, arg3
+            # NOT arg1, arg1
             pass
         elif (op == "NOR"):
-            # TODO: two seperate instructions
+            # NOR arg1, arg2, arg3 is
+
+            # OR arg1, arg2, arg3
+            # NOT arg1, arg1
             pass
         elif (op == "NXOR"):
-            # TODO: two seperate instructions
+            # NXOR arg1, arg2, arg3 is
+
+            # XOR arg1, arg2, arg3
+            # NOT arg1, arg1
             pass
         elif (op == "LA"):
-            # TODO: two seperate instructions
+            # LA arg1, memloc_imm is
+
+            # LUI $at, memloc_imm
+            # ORI arg1, $at, memloc_imm
             pass
         elif (op == "LV"):
-            # TODO: two seperate instructions
+            # LV arg1, imm is
+
+            # LUI $at, imm
+            # ORI arg1, $at, imm
             pass
         elif (op == "PUSH"):
-            # TODO: two seperate instructions
+            # PUSH arg1 is
+
+            # SW arg1, $sp, 0
+            # ADDI $sp, $sp, -1
             pass
         elif (op == "POP"):
-            # TODO: two seperate instructions
+            # POP arg1 is
+
+            # LW arg1, $sp, 0
+            # ADDI $sp, $sp, 1
             pass
     elif (op == "SUBI"):
         op = "ADDI"
