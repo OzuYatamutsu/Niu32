@@ -481,43 +481,57 @@ def convert_pseudo_op(op, args):
 
             # AND arg1, arg2, arg3
             # NOT arg1, arg1
-            pass
+            
+            op = ["AND", TWO_STG_PSEUDO_OP[op]]
         elif (op == "NOR"):
             # NOR arg1, arg2, arg3 is
 
             # OR arg1, arg2, arg3
             # NOT arg1, arg1
-            pass
+
+            op = ["OR", TWO_STG_PSEUDO_OP[op]]
         elif (op == "NXOR"):
             # NXOR arg1, arg2, arg3 is
 
             # XOR arg1, arg2, arg3
             # NOT arg1, arg1
-            pass
+            
+            op = ["NXOR", TWO_STG_PSEUDO_OP[op]]
         elif (op == "LA"):
             # LA arg1, memloc_imm is
 
             # LUI $at, memloc_imm
             # ORI arg1, $at, memloc_imm
-            pass
+            
+            op = ["LUI", TWO_STG_PSEUDO_OP[op]]
+            args = ["$at", args[1]]
+            # TODO: What do we do about arg1 for 2-stg?
         elif (op == "LV"):
             # LV arg1, imm is
 
             # LUI $at, imm
             # ORI arg1, $at, imm
-            pass
+            
+            op = ["LUI", TWO_STG_PSEUDO_OP[op]]
+            args = ["$at", args[1]]
+            # TODO: What do we do about arg1 for 2-stg?
         elif (op == "PUSH"):
             # PUSH arg1 is
 
             # SW arg1, $sp, 0
             # ADDI $sp, $sp, -1
-            pass
+            
+            op = ["SW", TWO_STG_PSEUDO_OP[op]]
+            args.append("$sp")
+            args.append("0")
         elif (op == "POP"):
             # POP arg1 is
 
             # LW arg1, $sp, 0
             # ADDI $sp, $sp, 1
-            pass
+            op = ["LW", TWO_STG_PSEUDO_OP[op]]
+            args.append("$sp")
+            args.append(0)
     elif (op == "SUBI"):
         op = "ADDI"
         # Negate imm
