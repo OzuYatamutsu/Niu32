@@ -531,7 +531,7 @@ def convert_pseudo_op(op, args):
             # ADDI $sp, $sp, 1
             op = ["LW", TWO_STG_PSEUDO_OP[op]]
             args.append("$sp")
-            args.append(0)
+            args.append("0")
     elif (op == "SUBI"):
         op = "ADDI"
         # Negate imm
@@ -581,7 +581,53 @@ def convert_pseudo_op(op, args):
 def convert_two_stg_pseudo_op(op, args):
     '''Converts a second-stage pseudo-op to valid Niu32 assembly code.'''
 
-    pass
+    if (op == "NAND.2"):
+        # NAND arg1, arg2, arg3 is
+
+        # AND arg1, arg2, arg3
+        # NOT arg1, arg1
+            
+        pass
+    elif (op == "NOR.2"):
+        # NOR arg1, arg2, arg3 is
+
+        # OR arg1, arg2, arg3
+        # NOT arg1, arg1
+
+        pass
+    elif (op == "NXOR.2"):
+        # NXOR arg1, arg2, arg3 is
+
+        # XOR arg1, arg2, arg3
+        # NOT arg1, arg1
+            
+        pass
+    elif (op == "LA.2"):
+        # LA arg1, memloc_imm is
+
+        # LUI $at, memloc_imm
+        # ORI arg1, $at, memloc_imm
+        pass
+        # TODO: What do we do about arg1 for 2-stg?
+    elif (op == "LV.2"):
+        # LV arg1, imm is
+
+        # LUI $at, imm
+        # ORI arg1, $at, imm
+        pass
+        # TODO: What do we do about arg1 for 2-stg?
+    elif (op == "PUSH.2"):
+        # PUSH arg1 is
+
+        # SW arg1, $sp, 0
+        # ADDI $sp, $sp, -1
+        pass
+    elif (op == "POP.2"):
+        # POP arg1 is
+
+        # LW arg1, $sp, 0
+        # ADDI $sp, $sp, 1
+        pass
 
 def instr_assemble(op, args, instrNum, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
