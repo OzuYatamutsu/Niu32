@@ -6,7 +6,7 @@
 
 ## What is this?
 
-Niu32 is a **RISC** 32-bit instruction set that aims to be as simple as possible to understand, well-documented, and easy to write for. A Python 3 assembler will be provided in near future after the specification is complete.
+Niu32 is a **RISC** 32-bit instruction set that aims to be as simple as possible to understand, well-documented, and easy to write for. A Python 3 assembler is included, and is actively in development.
 
 ## Before we start...
 
