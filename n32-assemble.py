@@ -81,9 +81,9 @@ PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
              "BGT", "BGE", "GOTO", "JMP", "RET", 
              "PUSH", "POP"]
 
-TWO_STG_PSEUDO_OP = ["NAND.2", "NOR.2", "NXOR.2", 
-                     "LA.2", "LV.2", "PUSH.2", 
-                     "POP.2"]
+TWO_STG_PSEUDO_OP = {"NAND": "NAND.2", "NOR": "NOR.2", "NXOR": "NXOR.2", 
+                     "LA": "LA.2", "LV": "LV.2", "PUSH": "PUSH.2", 
+                     "POP": "POP.2"}
 
 DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
@@ -241,7 +241,7 @@ def assemble(inputAsm):
                     handle_error(ERR_ORIG_LOC, lineNum)
 
             # Check if this is a dedicated instruction
-            elif (op in OP1 or op in OP2 or op in PSEUDO_OP or op in TWO_STG_PSEUDO_OP):
+            elif (op in OP1 or op in OP2 or op in PSEUDO_OP or op in TWO_STG_PSEUDO_OP.values()):
                 # Memory location
                 outLine = INSTR_PREFIX + HEX_PREFIX
                 outLine = outLine + decimal_to_hex(memLocation, BIT_SIZE)
@@ -473,7 +473,29 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
 def convert_pseudo_op(op, args):
     '''Converts a pseudo-op to valid Niu32 assembly code.'''
 
-    if (op == "SUBI"):
+    # Check if the op is two-stage
+    if (op in TWO_STG_PSEUDO_OP):
+        if (op == "NAND"):
+            pass
+        elif (op == "NOR"):
+            # TODO: two seperate instructions
+            pass
+        elif (op == "NXOR"):
+            # TODO: two seperate instructions
+            pass
+        elif (op == "LA"):
+            # TODO: two seperate instructions
+            pass
+        elif (op == "LV"):
+            # TODO: two seperate instructions
+            pass
+        elif (op == "PUSH"):
+            # TODO: two seperate instructions
+            pass
+        elif (op == "POP"):
+            # TODO: two seperate instructions
+            pass
+    elif (op == "SUBI"):
         op = "ADDI"
         # Negate imm
         args[1] = num_to_binary(-1 * num_to_num(args[1]))
@@ -485,25 +507,10 @@ def convert_pseudo_op(op, args):
         op = "LEQ"
         # Swap args[0] and args[1]
         args[0], args[1] = args[1], args[0]
-    elif (op == "NAND"):
-        # TODO: two seperate instructions
-        pass
-    elif (op == "NOR"):
-        # TODO: two seperate instructions
-        pass
-    elif (op == "NXOR"):
-        # TODO: two seperate instructions
-        pass
     elif (op == "CPY"):
         op = "ADD"
         # op1 + zero = op1
         args.append("$zero")
-    elif (op == "LA"):
-        # TODO: two seperate instructions
-        pass
-    elif (op == "LV"):
-        # TODO: two seperate instructions
-        pass
     elif (op == "CLR"):
         op = "ADD"
         # 0 + 0 => op0
@@ -531,12 +538,6 @@ def convert_pseudo_op(op, args):
         # Simple alias, we don't care about return location
         args.append("$zero")
         args.append("$ra")
-    elif (op == "PUSH"):
-        # TODO: two seperate instructions
-        pass
-    elif (op == "POP"):
-        # TODO: two seperate instructions
-        pass
 
     return op, args
 
