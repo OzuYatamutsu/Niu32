@@ -586,22 +586,25 @@ def convert_two_stg_pseudo_op(op, args):
 
         # AND arg1, arg2, arg3
         # NOT arg1, arg1
-            
-        pass
+        
+        op = "NOT"
+        args = [args[0], args[0]]
     elif (op == "NOR.2"):
         # NOR arg1, arg2, arg3 is
 
         # OR arg1, arg2, arg3
         # NOT arg1, arg1
 
-        pass
+        op = "NOT"
+        args = [args[0], args[0]]
     elif (op == "NXOR.2"):
         # NXOR arg1, arg2, arg3 is
 
         # XOR arg1, arg2, arg3
         # NOT arg1, arg1
             
-        pass
+        op = "NOT"
+        args = [args[0], args[0]]
     elif (op == "LA.2"):
         # LA arg1, memloc_imm is
 
@@ -621,13 +624,18 @@ def convert_two_stg_pseudo_op(op, args):
 
         # SW arg1, $sp, 0
         # ADDI $sp, $sp, -1
-        pass
+        op = "ADDI"
+        args = ["$sp", "sp", "-1"]
     elif (op == "POP.2"):
         # POP arg1 is
 
         # LW arg1, $sp, 0
         # ADDI $sp, $sp, 1
-        pass
+
+        op = "ADDI"
+        args = ["$sp", "sp", "-1"]
+
+    return op, args
 
 def instr_assemble(op, args, instrNum, unresolvedLabels):
     '''Assembles a Niu32 assembly instruction to hex code.'''
