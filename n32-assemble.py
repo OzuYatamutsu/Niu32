@@ -505,7 +505,6 @@ def convert_pseudo_op(op, args):
             
             op = ["LUI", TWO_STG_PSEUDO_OP[op]]
             args = ["$at", args[1]]
-            # TODO: What do we do about arg1 for 2-stg?
         elif (op == "LV"):
             # LV arg1, imm is
 
@@ -514,7 +513,6 @@ def convert_pseudo_op(op, args):
             
             op = ["LUI", TWO_STG_PSEUDO_OP[op]]
             args = ["$at", args[1]]
-            # TODO: What do we do about arg1 for 2-stg?
         elif (op == "PUSH"):
             # PUSH arg1 is
 
@@ -610,15 +608,17 @@ def convert_two_stg_pseudo_op(op, args):
 
         # LUI $at, memloc_imm
         # ORI arg1, $at, memloc_imm
-        pass
-        # TODO: What do we do about arg1 for 2-stg?
+        
+        op = "ORI"
+        args = [args[0], "$at", args[1]]
     elif (op == "LV.2"):
         # LV arg1, imm is
 
         # LUI $at, imm
         # ORI arg1, $at, imm
-        pass
-        # TODO: What do we do about arg1 for 2-stg?
+
+        op = "ORI"
+        args = [args[0], "$at", args[1]]
     elif (op == "PUSH.2"):
         # PUSH arg1 is
 
