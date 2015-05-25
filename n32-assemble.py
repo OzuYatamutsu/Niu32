@@ -320,8 +320,12 @@ def get_instr(line):
         op = op + line[pointChar]
         pointChar = pointChar + 1
     
-    line = line.replace(op, "", 1).replace(" ", "").replace("\t", "")
-    result = line.split(",")
+    if (op in DIRECTIVES):
+        line = line.replace(op, "", 1).replace("\t", "").strip()
+        result = line.split(" ")
+    else:
+        line = line.replace(op, "", 1).replace(" ", "").replace("\t", "")
+        result = line.split(",")
     result.insert(0, op.upper())
 
     if (":" in op):
@@ -438,8 +442,7 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
     address number, instruction number, and assembler output queue.'''
 
     if (op == ".NAME"):
-        args = args[0].split("=")
-        labelTable[args[0]] = num_to_binary(args[1])
+        labelTable[args[0]] = num_to_binary(args[1], BIT_SIZE)
     elif (op == ".ORIG"):
         memoryDelta = addressNum 
         instrDelta = instrNum
@@ -805,7 +808,7 @@ def read_input(filename):
 def handle_error(err, lineNum):
     '''Outputs an error and gives the line of failure before exiting.'''
 
-    print(err.replace("{arg1}", lineNum))
+    print(err.replace("{arg1}", str(lineNum)))
     _exit(-1)
 
 # Run assembler on call!
