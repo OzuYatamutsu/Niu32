@@ -550,12 +550,12 @@ def convert_pseudo_op(op, args):
         args[2] = "0b" + num_to_binary(-1 * num_to_num(args[2]), OFFSET_LEN)
     elif (op == "GT"):
         op = "LT"
-        # Swap args[0] and args[1]
-        args[0], args[1] = args[1], args[0]
+        # Swap args[1] and args[2]
+        args[1], args[2] = args[2], args[1]
     elif (op == "GEQ"):
         op = "LEQ"
-        # Swap args[0] and args[1]
-        args[0], args[1] = args[1], args[0]
+        # Swap args[1] and args[2]
+        args[1], args[2] = args[2], args[1]
     elif (op == "CPY"):
         op = "ADD"
         # op1 + zero = op1
@@ -567,12 +567,12 @@ def convert_pseudo_op(op, args):
         args.append("$zero")
     elif (op == "BGT"):
         op = "BLT"
-        # Swap args[0] and args[1]
-        args[0], args[1] = args[1], args[0]
+        # Swap args[1] and args[2]
+        args[1], args[2] = args[2], args[1]
     elif (op == "BGE"):
         op = "BLE"
-        # Swap args[0] and args[1]
-        args[0], args[1] = args[1], args[0]
+        # Swap args[2] and args[1]
+        args[1], args[2] = args[2], args[1]
     elif (op == "GOTO"):
         op = "BEQ"
         # Unconditional branch (0 == 0)
