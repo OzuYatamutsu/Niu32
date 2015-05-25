@@ -249,6 +249,7 @@ def assemble(inputAsm):
 
                 # Op
                 outLine = outLine + ADDRESS_INSTR_SEP + INSTR_ARG_SEP + op
+                if (op in TWO_STG_PSEUDO_OP): outLine = outLine + ".1"
 
                 # Args
                 outLine = outLine + " " + ",".join(args).upper()
@@ -461,10 +462,11 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
 
             instrNum = instrNum + int(memoryDelta / INSTR_SIZE)
     elif (op == ".WORD"):
+        args[0] = args[0].lower()
         outputLine = INSTR_PREFIX + HEX_PREFIX 
         outputLine = outputLine + decimal_to_hex(addressNum, BIT_SIZE)
-        outputLine = outputLine + ADDRESS_INSTR_SEP + op
-        outputLine = outputLine + INSTR_ARG_SEP + ",".join(args).upper()
+        outputLine = outputLine + ADDRESS_INSTR_SEP + INSTR_ARG_SEP + op
+        outputLine = outputLine + " " + ",".join(args).upper()
         outputLine = outputLine + "\n" + decimal_to_hex(instrNum, BIT_SIZE)
         outputLine = outputLine + LINE_INSTR_SEP + hex_word_zero_pad(args[0]) + ";"
         outputAsm[instrNum] = outputLine
