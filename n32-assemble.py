@@ -266,11 +266,10 @@ def assemble(inputAsm):
                         inputAsm.insert(lineNum + 1, op[1])
                         op = op[0]
 
-                elif (op in TWO_STG_PSEUDO_OP):
-                    op, args = convert_two_stg_psuedo_op(op, args)
+                elif (op in TWO_STG_PSEUDO_OP.values()):
+                    op, args = convert_two_stg_pseudo_op(op, args)
 
-                # Assembled instruction
-
+                # Assemble instruction
                 try:
                     instr, unresolved, unresolvedMod = instr_assemble(
                         op, args, instrNum, unresolved)
