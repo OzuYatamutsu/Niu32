@@ -458,17 +458,25 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
             instrNum = instrNum + int(memoryDelta / INSTR_SIZE)
     elif (op == ".WORD"):
         outputLine = INSTR_PREFIX + HEX_PREFIX 
-        outputLIne = outputLine + decimal_to_hex(addressNum, BIT_SIZE)
+        outputLine = outputLine + decimal_to_hex(addressNum, BIT_SIZE)
         outputLine = outputLine + ADDRESS_INSTR_SEP + op
         outputLine = outputLine + INSTR_ARG_SEP + ",".join(args).upper()
         outputLine = outputLine + "\n" + decimal_to_hex(instrNum, BIT_SIZE)
-        outputLine = outputLine + LINE_INSTR_SEP + args[1] + ";"
-        outputAsm.append(outputLine)
+        outputLine = outputLine + LINE_INSTR_SEP + hex_word_zero_pad(args[0]) + ";"
+        outputAsm[instrNum] = outputLine
 
         instrNum = instrNum + 1
         addressNum = addressNum + INSTR_SIZE
 
     return labelTable, addressNum, instrNum, outputAsm
+
+def hex_word_zero_pad(hex_string):
+    '''Zero-pads an input hex string to BIT_SIZE length.'''
+
+    global BIT_SIZE
+
+    hex_string = hex_string.replace("0x", "")
+    return "0x" + ('0' * (int(BIT_SIZE / 4) - len(hex_string))) + hex_string
 
 def convert_pseudo_op(op, args):
     '''Converts a pseudo-op to valid Niu32 assembly code.'''
