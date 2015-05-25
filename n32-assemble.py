@@ -24,6 +24,7 @@ VERBOSE_HDR = "<verbose> "
 ### Assembler variables
 BIT_SIZE = 32 # Bits
 INSTR_SIZE = 4 # Bytes
+OFFSET_LEN = 17 # Bits
 
 ### Error/Warning/Informational messages
 ERR_INVALID_ARGS = """Syntax: n32-assemble.py <filename> [args]
@@ -259,10 +260,10 @@ def assemble(inputAsm):
                     # Convert/expand to actual instruction
                     op, args = convert_pseudo_op(op, args)
                     
-                    if (op is list):
+                    if (type(op) is list):
                         # If converted to multiple instructions, this is two-stage pseudo-op
                         # Process second stage next
-                        inputAsm.append(inputAsm.index(line) + 1)
+                        inputAsm.insert(lineNum + 1, op[1])
 
                 elif (op in TWO_STG_PSEUDO_OP):
                     op, args = convert_two_stg_psuedo_op(op, args)
@@ -292,8 +293,8 @@ def assemble(inputAsm):
                 print(ERR_SYNTAX)
                 _exit(-1)
             
-            lineNum = lineNum + 1
-            # And start the next line...
+        lineNum = lineNum + 1
+        # And start the next line...
 
     # Note: Output is NOT complete! Must resolve labels!
     return outputAsm, labels, unresolved
@@ -493,28 +494,28 @@ def convert_pseudo_op(op, args):
             # AND arg1, arg2, arg3
             # NOT arg1, arg1
             
-            op = ["AND", TWO_STG_PSEUDO_OP[op]]
+            op = ["AND", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
         elif (op == "NOR"):
             # NOR arg1, arg2, arg3 is
 
             # OR arg1, arg2, arg3
             # NOT arg1, arg1
 
-            op = ["OR", TWO_STG_PSEUDO_OP[op]]
+            op = ["OR", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
         elif (op == "NXOR"):
             # NXOR arg1, arg2, arg3 is
 
             # XOR arg1, arg2, arg3
             # NOT arg1, arg1
             
-            op = ["NXOR", TWO_STG_PSEUDO_OP[op]]
+            op = ["NXOR", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
         elif (op == "LA"):
             # LA arg1, memloc_imm is
 
             # LUI $at, memloc_imm
             # ORI arg1, $at, memloc_imm
             
-            op = ["LUI", TWO_STG_PSEUDO_OP[op]]
+            op = ["LUI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
             args = ["$at", args[1]]
         elif (op == "LV"):
             # LV arg1, imm is
@@ -522,7 +523,7 @@ def convert_pseudo_op(op, args):
             # LUI $at, imm
             # ORI arg1, $at, imm
             
-            op = ["LUI", TWO_STG_PSEUDO_OP[op]]
+            op = ["LUI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
             args = ["$at", args[1]]
         elif (op == "PUSH"):
             # PUSH arg1 is
@@ -530,7 +531,7 @@ def convert_pseudo_op(op, args):
             # SW arg1, $sp, 0
             # ADDI $sp, $sp, -1
             
-            op = ["SW", TWO_STG_PSEUDO_OP[op]]
+            op = ["SW", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
             args.append("$sp")
             args.append("0")
         elif (op == "POP"):
@@ -538,13 +539,13 @@ def convert_pseudo_op(op, args):
 
             # LW arg1, $sp, 0
             # ADDI $sp, $sp, 1
-            op = ["LW", TWO_STG_PSEUDO_OP[op]]
+            op = ["LW", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
             args.append("$sp")
             args.append("0")
     elif (op == "SUBI"):
         op = "ADDI"
         # Negate imm
-        args[1] = num_to_binary(-1 * num_to_num(args[1]))
+        args[2] = "0b" + num_to_binary(-1 * num_to_num(args[2]), OFFSET_LEN)
     elif (op == "GT"):
         op = "LT"
         # Swap args[0] and args[1]
@@ -681,7 +682,7 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
                 unresolvedMod = True
             else:
                 # Convert imm
-                instr = instr + num_to_binary(args[2], 17)
+                instr = instr + num_to_binary(args[2], OFFSET_LEN)
     elif (op in OP2):
         # OP1 is ALUI
         instr = instr + OP1["ALUI"]
@@ -716,7 +717,7 @@ def resolve_all(asm, labels, uses):
                 resolve(
                     hex_to_binary(find_asm_mem_loc(asm[uses[use]]), 32),
                     labels[use.upper()]
-                ), 17)
+                ), OFFSET_LEN)
         )
 
         # Now assemble instruction to hex
@@ -808,7 +809,7 @@ def read_input(filename):
 def handle_error(err, lineNum):
     '''Outputs an error and gives the line of failure before exiting.'''
 
-    print(err.replace("{arg1}", str(lineNum)))
+    print(str(err).replace("{arg1}", str(lineNum)))
     _exit(-1)
 
 # Run assembler on call!
