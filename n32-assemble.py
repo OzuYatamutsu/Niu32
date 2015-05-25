@@ -443,7 +443,7 @@ def handle_directive(op, args, labelTable, addressNum, instrNum, outputAsm):
     address number, instruction number, and assembler output queue.'''
 
     if (op == ".NAME"):
-        labelTable[args[0]] = num_to_binary(args[1], BIT_SIZE)
+        labelTable[args[0].upper()] = num_to_binary(args[1], BIT_SIZE)
     elif (op == ".ORIG"):
         memoryDelta = addressNum 
         instrDelta = instrNum
