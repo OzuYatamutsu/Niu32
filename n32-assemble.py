@@ -264,6 +264,7 @@ def assemble(inputAsm):
                         # If converted to multiple instructions, this is two-stage pseudo-op
                         # Process second stage next
                         inputAsm.insert(lineNum + 1, op[1])
+                        op = op[0]
 
                 elif (op in TWO_STG_PSEUDO_OP):
                     op, args = convert_two_stg_psuedo_op(op, args)
@@ -655,34 +656,35 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
     unresolvedMod = False
 
     if (op in OP1):
+        if (is_label(args[len(args) - 1])):
+            # Add to unresolvedLabels
+            unresolvedLabels[args[len(args) - 1]] = instrNum
+
+            # ...and flag that we must resolve label later
+            unresolvedMod = True
         if (op == "ALUI"):
             raise AssertionError(ERR_ALUI)
         elif (op == "LUI"):
-            pass
+            # arg1 = $zero
+            args.insert(1, "$zero")
         elif (op == "JAL"):
             pass
+
+        # Convert op
+        instr = instr + OP1[op]
+
+        # Convert arg1
+        instr = instr + REGS[args[1]]
+
+        # Convert argd
+        instr = instr + REGS[args[0]]
+
+        if (not unresolvedMod):
+            # Convert imm
+            instr = instr + num_to_binary(args[2], OFFSET_LEN)
         else:
-            # Convert op
-            instr = instr + OP1[op]
-
-            # Convert arg1
-            instr = instr + REGS[args[1]]
-
-            # Convert argd
-            instr = instr + REGS[args[0]]
-
-            if (is_label(args[2])):
-                # Add to unresolvedLabels
-                unresolvedLabels[args[2]] = instrNum
-
-                # ...and put a placeholder instead for imm
-                instr = instr + args[2]
-
-                # ...and flag that we must resolve label later
-                unresolvedMod = True
-            else:
-                # Convert imm
-                instr = instr + num_to_binary(args[2], OFFSET_LEN)
+            # Put a placeholder instead for imm
+            instr = instr + args[len(args) - 1]
     elif (op in OP2):
         # OP1 is ALUI
         instr = instr + OP1["ALUI"]
