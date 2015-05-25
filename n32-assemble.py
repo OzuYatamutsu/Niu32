@@ -482,7 +482,7 @@ def hex_word_zero_pad(hex_string):
     global BIT_SIZE
 
     hex_string = hex_string.replace("0x", "")
-    return "0x" + ('0' * (int(BIT_SIZE / 4) - len(hex_string))) + hex_string
+    return ('0' * (int(BIT_SIZE / 4) - len(hex_string))) + hex_string
 
 def convert_pseudo_op(op, args):
     '''Converts a pseudo-op to valid Niu32 assembly code.'''
