@@ -637,7 +637,7 @@ def convert_two_stg_pseudo_op(op, args):
         # SW arg1, $sp, 0
         # ADDI $sp, $sp, -1
         op = "ADDI"
-        args = ["$sp", "sp", "-1"]
+        args = ["$sp", "$sp", "-1"]
     elif (op == "POP.2"):
         # POP arg1 is
 
@@ -645,7 +645,7 @@ def convert_two_stg_pseudo_op(op, args):
         # ADDI $sp, $sp, 1
 
         op = "ADDI"
-        args = ["$sp", "sp", "-1"]
+        args = ["$sp", "$sp", "-1"]
 
     return op, args
 
