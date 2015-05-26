@@ -656,12 +656,18 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
     unresolvedMod = False
 
     if (op in OP1):
-        if (is_label(args[len(args) - 1])):
+        if (is_label(args[-1])):
             # Add to unresolvedLabels
-            if (args[len(args) - 1] not in unresolvedLabels):
-                unresolvedLabels[args[len(args) - 1]] = [instrNum]
+            if (args[-1] not in unresolvedLabels):
+                unresolvedLabels[args[-1]] = [instrNum]
             else:
-                unresolvedLabels[args[len(args) - 1]].append(instrNum)
+                unresolvedLabels[args[-1]].append(instrNum)
+
+            # Special cases: Jump + LUI instructions
+            if (op == "JMP"): 
+                unresolvedLabels[args[-1]][-1] = str(instrNum) + "J"
+            elif (op == "LUI"):
+                unresolvedLabels[args[-1]][-1] = str(instrNum) + "L"
 
             # ...and flag that we must resolve label later
             unresolvedMod = True
@@ -687,7 +693,7 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
             instr = instr + num_to_binary(args[2], OFFSET_LEN)
         else:
             # Put a placeholder instead for imm
-            instr = instr + args[len(args) - 1]
+            instr = instr + args[-1]
     elif (op in OP2):
         # OP1 is ALUI
         instr = instr + OP1["ALUI"]
@@ -715,15 +721,30 @@ def resolve_all(asm, labels, uses):
     incomplete assembled program (as a list).'''
     for label in uses:
         for use in uses[label]:
-            # Resolve offset
-            asm[use] = asm[use].replace(
-                label,
-                trim(
-                    resolve(
-                        hex_to_binary(find_asm_mem_loc(asm[use]), 32),
-                        labels[label.upper()]
-                    ), OFFSET_LEN)
-            )
+            if (type(use) is str):
+                # Special case!
+                if ("J" in use):
+                    # Handle jumps differently
+                    use = int(use.replace("J", ""))
+                elif ("L" in use):
+                    # Handle LUIs differently
+                    use = int(use.replace("L", ""))
+                    asm[use] = asm[use].replace(
+                        label, trim(
+                            hex_to_binary(find_asm_mem_loc(asm[use]), 32), 
+                            OFFSET_LEN
+                            )
+                        )
+            else:
+                # Resolve offset
+                asm[use] = asm[use].replace(
+                    label,
+                    trim(
+                        resolve(
+                            hex_to_binary(find_asm_mem_loc(asm[use]), 32),
+                            labels[label.upper()]
+                        ), OFFSET_LEN)
+                )
 
             # Now assemble instruction to hex
             hex_out = get_between(BIN_TAG, BIN_CTAG, asm[use])
@@ -772,7 +793,8 @@ def binary_to_signed_decimal(binString):
     else: return -1 * ((int(binString, 2) ^ int('0b' + '1' * len(binString), 2)) + 1)
 
 def trim(binString, numBits):
-    '''Trims leading 0s so that binString is length numBits.'''
+    '''Trims leading 0s so that binString is length numBits. 
+    Will truncate least-significant bits if result length is too big.'''
 
     binString = binString.replace("0b", "")
 
@@ -780,17 +802,18 @@ def trim(binString, numBits):
         binString = (numBits - len(binString)) * '0' + binString
 
     decValue = binary_to_signed_decimal(binString)
-    if decValue > (2**numBits - 1): 
-        raise Exception("Target address is too far away!")
+    #if decValue > (2**numBits - 1): 
+    #    raise Exception("Target address is too far away!")
 
     if decValue < 0: binString = bin(decValue & int('0b' + '1' * numBits, 2))
     else: binString = bin(decValue)
     binString = binString.replace("0b", "")
 
     # And check again
-    if len(binString) < numBits:
+    if (len(binString) < numBits):
         binString = (numBits - len(binString)) * '0' + binString
-
+    elif (len(binString) > numBits):
+        binString = binString[0:numBits]
     return binString
 
 def output_file(output):
