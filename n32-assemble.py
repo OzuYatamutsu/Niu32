@@ -92,6 +92,8 @@ DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 INSTR_PREFIX = "-- @ "
 BIN_TAG = "<BIN>"
 BIN_CTAG = "</BIN>"
+MEM_RESOLV_TAG = "<M>"
+MEM_RESOLV_CTAG = "</M>"
 ADDRESS_INSTR_SEP = " : "
 INSTR_ARG_SEP = "   "
 LINE_INSTR_SEP = " : "
@@ -518,7 +520,10 @@ def convert_pseudo_op(op, args):
             # ORI arg1, $at, memloc_imm
             
             op = ["LUI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
-            args = ["$at", args[1]]
+
+            # We have to resolve memory locations later!
+            op[1] = op[1].replace(args[-1], MEM_RESOLV_TAG + args[-1] + MEM_RESOLV_CTAG)
+            args = ["$at", MEM_RESOLV_TAG + args[1] + MEM_RESOLV_CTAG]
         elif (op == "LV"):
             # LV arg1, imm is
 
@@ -719,7 +724,15 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
+
+    # TODO: Handle labels of the form <MEM>label</MEM> i.e. LA op
     for label in uses:
+        if (MEM_RESOLV_TAG in label):
+            # Resolve memory location of label
+
+            label_text = get_between(MEM_RESOLV_TAG, MEM_RESOLV_CTAG, label)
+            # TODO: LA is POINTER DEREFERENCE, LV is POINTER VALUE
+            labels[label] = find_label_memory_loc(asm, label_text)
         for use in uses[label]:
             if (type(use) is str):
                 # Special case!
@@ -735,6 +748,9 @@ def resolve_all(asm, labels, uses):
                             OFFSET_LEN
                             )
                         )
+                elif ("A" in use):
+                    # Handle LUAs differently
+                    pass
             else:
                 # Resolve offset
                 asm[use] = asm[use].replace(
@@ -769,6 +785,13 @@ def find_asm_mem_loc(line):
     '''Returns the memory location of an assembled instruction.'''
 
     return line[5:15]
+
+def find_label_memory_loc(asm, label):
+    '''Returns the memory location of a given label.'''
+
+    for instr in list(asm.values()):
+        if (label.upper() in instr.split("\n")[0]):
+            return find_asm_mem_loc(instr)
 
 def get_between(startTag, endTag, input):
     '''Gets the text between two tags.'''
