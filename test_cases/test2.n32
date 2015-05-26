@@ -21,7 +21,7 @@ GT $t3, $t0, $t1	  ! t3 = 1 (b/c t0 > t1)
 LT $t4, $t0, $t1	  ! t4 = 0 (b/c t0 NOT < t1)
 LV $sp, stak		  ! $sp <- stak
 PUSH $t3			  ! Pushes 1 onto the stack
-POP $t0				  ! Pops 1 into $t0
+POP $t3				  ! Pops 1 into $t0
 CPY $t0, $t2		  ! Copies 1 from $t0 -> $t2
 LA $t5, stak		  ! Stores $t5 <- 0x14
 ! End
