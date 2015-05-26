@@ -539,11 +539,10 @@ def convert_pseudo_op(op, args):
         elif (op == "POP"):
             # POP arg1 is
 
-            # LW arg1, $sp, 0
             # ADDI $sp, $sp, 1
-            op = ["LW", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
-            args.append("$sp")
-            args.append("0")
+            # LW arg1, $sp, 0
+            op = ["ADDI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
+            args = ["$sp", "$sp", "1"]
     elif (op == "SUBI"):
         op = "ADDI"
         # Negate imm
@@ -643,11 +642,11 @@ def convert_two_stg_pseudo_op(op, args):
     elif (op == "POP.2"):
         # POP arg1 is
 
-        # LW arg1, $sp, 0
         # ADDI $sp, $sp, 1
-
-        op = "ADDI"
-        args = ["$sp", "$sp", "-1"]
+        # LW arg1, $sp, 0
+        op = "LW"
+        args.append("$sp")
+        args.append("0")
 
     return op, args
 
