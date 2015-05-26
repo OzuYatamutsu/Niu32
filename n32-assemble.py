@@ -659,7 +659,10 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
     if (op in OP1):
         if (is_label(args[len(args) - 1])):
             # Add to unresolvedLabels
-            unresolvedLabels[args[len(args) - 1]] = instrNum
+            if (args[len(args) - 1] not in unresolvedLabels):
+                unresolvedLabels[args[len(args) - 1]] = [instrNum]
+            else:
+                unresolvedLabels[args[len(args) - 1]].append(instrNum)
 
             # ...and flag that we must resolve label later
             unresolvedMod = True
@@ -711,25 +714,25 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
 def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
+    for label in uses:
+        for use in uses[label]:
+            # Resolve offset
+            asm[use] = asm[use].replace(
+                label,
+                trim(
+                    resolve(
+                        hex_to_binary(find_asm_mem_loc(asm[use]), 32),
+                        labels[label.upper()]
+                    ), OFFSET_LEN)
+            )
 
-    for use in uses:
-        # Resolve offset
-        asm[uses[use]] = asm[uses[use]].replace(
-            use,
-            trim(
-                resolve(
-                    hex_to_binary(find_asm_mem_loc(asm[uses[use]]), 32),
-                    labels[use.upper()]
-                ), OFFSET_LEN)
-        )
+            # Now assemble instruction to hex
+            hex_out = get_between(BIN_TAG, BIN_CTAG, asm[use])
+            hex_out = binary_to_hex_word(hex_out)
 
-        # Now assemble instruction to hex
-        hex_out = get_between(BIN_TAG, BIN_CTAG, asm[uses[use]])
-        hex_out = binary_to_hex_word(hex_out)
-
-        # And commit back
-        asm[uses[use]] = replace_between(BIN_TAG, BIN_CTAG, 
-                                         hex_out, asm[uses[use]]) + ";"
+            # And commit back
+            asm[use] = replace_between(BIN_TAG, BIN_CTAG, 
+                                             hex_out, asm[use]) + ";"
 
     return asm
 
