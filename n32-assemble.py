@@ -83,8 +83,8 @@ PSEUDO_OP = ["SUBI", "GT", "GEQ", "NAND", "NOR",
              "PUSH", "POP"]
 
 TWO_STG_PSEUDO_OP = {"NAND": "NAND.2", "NOR": "NOR.2", "NXOR": "NXOR.2", 
-                     "LA": "LA.2", "LV": "LV.2", "PUSH": "PUSH.2", 
-                     "POP": "POP.2"}
+                     "LA": "LA.2", "LA.2": "LA.3", "LV": "LV.2", 
+                     "PUSH": "PUSH.2", "POP": "POP.2"}
 
 DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
@@ -271,6 +271,10 @@ def assemble(inputAsm):
 
                 elif (op in TWO_STG_PSEUDO_OP.values()):
                     op, args = convert_two_stg_pseudo_op(op, args)
+                    if (type(op) is list):
+                        # Only applies to LA.3
+                        inputAsm.insert(lineNum + 1, op[1])
+                        op = op[0]
 
                 # Assemble instruction
                 try:
@@ -626,9 +630,19 @@ def convert_two_stg_pseudo_op(op, args):
 
         # LUI $at, memloc_imm
         # ORI arg1, $at, memloc_imm
-        
-        op = "ORI"
-        args = [args[0], "$at", args[1]]
+        # LW arg1, $at, 0
+
+        op = ["ORI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
+        args = ["$at", "$at", args[1]]
+    elif (op == "LA.3"):
+        # LA arg1, memloc_imm is
+
+        # LUI $at, memloc_imm
+        # ORI arg1, $at, memloc_imm
+        # LW arg1, $at, 0
+
+        op = "LW"
+        args = [args[0], "$at", "0"]
     elif (op == "LV.2"):
         # LV arg1, imm is
 
@@ -738,6 +752,7 @@ def resolve_all(asm, labels, uses):
                 # Special case!
                 if ("J" in use):
                     # Handle jumps differently
+                    # TODO: complete
                     use = int(use.replace("J", ""))
                 elif ("L" in use):
                     # Handle LUIs differently
@@ -748,9 +763,6 @@ def resolve_all(asm, labels, uses):
                             OFFSET_LEN
                             )
                         )
-                elif ("A" in use):
-                    # Handle LUAs differently
-                    pass
             else:
                 # Resolve offset
                 asm[use] = asm[use].replace(
