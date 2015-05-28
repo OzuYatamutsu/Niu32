@@ -7,11 +7,12 @@
 ! $t2 holds 0x1 at end
 ! $t3 holds 0x1 at end
 ! $t4 holds 0x0 at end
-! $t5 holds 0x8 at end
+! $t5 holds 0xBEEF at end
 
 .ORIG 0x10            ! Skip the first four instr
 GOTO start			  ! Goes to 0x18
 .WORD 0xBEEF		  ! Stores 0xBEEF at 0x14
+.NAME pointer 0x14    ! Sets pointer = 0x14
 .NAME stak 0xffffffff ! Sets stak = 0xffffffff
 
 start: 
@@ -23,5 +24,5 @@ LV $sp, stak		  ! $sp <- stak
 PUSH $t3			  ! Pushes 1 onto the stack
 POP $t3				  ! Pops 1 into $t0
 CPY $t0, $t2		  ! Copies 1 from $t0 -> $t2
-LA $t5, start		  ! Stores $t5 <- 0x18
+LA $t5, pointer		  ! Stores $t5 <- *pointer = 0xBEEF
 ! End
