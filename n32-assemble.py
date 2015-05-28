@@ -92,8 +92,6 @@ DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 INSTR_PREFIX = "-- @ "
 BIN_TAG = "<BIN>"
 BIN_CTAG = "</BIN>"
-MEM_RESOLV_TAG = "<M>"
-MEM_RESOLV_CTAG = "</M>"
 ADDRESS_INSTR_SEP = " : "
 INSTR_ARG_SEP = "   "
 LINE_INSTR_SEP = " : "
@@ -251,7 +249,7 @@ def assemble(inputAsm):
 
                 # Op
                 outLine = outLine + ADDRESS_INSTR_SEP + INSTR_ARG_SEP + op
-                if (op in TWO_STG_PSEUDO_OP): outLine = outLine + ".1"
+                if (op in TWO_STG_PSEUDO_OP and op != "LA.2"): outLine = outLine + ".1"
 
                 # Args
                 outLine = outLine + " " + ",".join(args).upper()
@@ -524,10 +522,6 @@ def convert_pseudo_op(op, args):
             # ORI arg1, $at, memloc_imm
             
             op = ["LUI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
-
-            # We have to resolve memory locations later!
-            op[1] = op[1].replace(args[-1], MEM_RESOLV_TAG + args[-1] + MEM_RESOLV_CTAG)
-            args = ["$at", MEM_RESOLV_TAG + args[1] + MEM_RESOLV_CTAG]
         elif (op == "LV"):
             # LV arg1, imm is
 
@@ -741,12 +735,6 @@ def resolve_all(asm, labels, uses):
 
     # TODO: Handle labels of the form <MEM>label</MEM> i.e. LA op
     for label in uses:
-        if (MEM_RESOLV_TAG in label):
-            # Resolve memory location of label
-
-            label_text = get_between(MEM_RESOLV_TAG, MEM_RESOLV_CTAG, label)
-            # TODO: LA is POINTER DEREFERENCE, LV is POINTER VALUE
-            labels[label] = find_label_memory_loc(asm, label_text)
         for use in uses[label]:
             if (type(use) is str):
                 # Special case!
