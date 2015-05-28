@@ -34,7 +34,7 @@ CONTENT BEGIN
 -- @ 0x00000048 :    LA.2 $T5,POINTER
 00000012 : 377a000e;
 -- @ 0x0000004c :    LA.3 $T5,POINTER
-00000013 : 37540000;
+00000013 : 87540000;
 END;
 
 -- Note: This program was manually assembled
