@@ -746,9 +746,8 @@ def resolve_all(asm, labels, uses):
                     # Handle LUIs differently
                     use = int(use.replace("L", ""))
                     asm[use] = asm[use].replace(
-                        label, trim(
-                            hex_to_binary(find_asm_mem_loc(asm[use]), 32), 
-                            OFFSET_LEN
+                        label, '0' + trim(
+                            labels[label.upper()], OFFSET_LEN - 1
                             )
                         )
             else:
