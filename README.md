@@ -214,8 +214,8 @@ Stores the byte in `$arg1` at the memory location computed by adding `$arg2` and
 
 ##### LUI
 `LUI $argD, imm`        <br>
-**$argD <- imm[16:1]**      <br>
-Loads the **most-significant 16 bits** of `imm` into `$argD`. Can be combined with `ORI` to load a 32-bit immediate value into a register.
+**$argD <- imm[17:1]**      <br>
+Loads the **most-significant 17 bits** of `imm` into `$argD`. Can be combined with `ORI` to load a 32-bit immediate value into a register.
 
 ##### BEQ
 `BEQ $arg1, $arg2, imm`        <br>

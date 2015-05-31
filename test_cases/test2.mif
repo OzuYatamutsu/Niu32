@@ -16,7 +16,7 @@ CONTENT BEGIN
 -- @ 0x00000024 :    LT $T4,$T0,$T1
 00000009 : 014c9012;
 -- @ 0x00000028 :    LV.1 $SP,STAK
-0000000a : b03affff;
+0000000a : b03bffff;
 -- @ 0x0000002c :    LV.2 $SP,STAK
 0000000b : 3779ffff;
 -- @ 0x00000030 :    PUSH.1 $T3
