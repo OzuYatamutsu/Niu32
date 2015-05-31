@@ -526,6 +526,7 @@ def convert_pseudo_op(op, args):
             # ORI arg1, $at, memloc_imm
             
             op = ["LUI", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
+            args = ["$at", args[1]]
         elif (op == "LV"):
             # LV arg1, imm is
 
@@ -685,6 +686,9 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
                 unresolvedLabels[args[-1]][-1] = str(instrNum) + "J"
             elif (op in IMMEDIATES):
                 unresolvedLabels[args[-1]][-1] = str(instrNum) + "I"
+                if (op == "LUI"):
+                    # We have to handle LUIs a little differently
+                    unresolvedLabels[args[-1]][-1] = str(instrNum) + "IL"
 
             # ...and flag that we must resolve label later
             unresolvedMod = True
@@ -737,15 +741,21 @@ def resolve_all(asm, labels, uses):
     '''Resolves all uses of labels to their memory locations in the input 
     incomplete assembled program (as a list).'''
 
-    # TODO: Handle labels of the form <MEM>label</MEM> i.e. LA op
     for label in uses:
         for use in uses[label]:
             if (type(use) is str and "I" in use):
+                isLui = False
+
+                if ("L" in use):
+                    # Truncate during trim-step
+                    isLui = True
+                    use = use.replace("L", "")
+
                 # Handle immediates 
                 use = int(use.replace("I", ""))
                 asm[use] = asm[use].replace(
                     label, trim(
-                            labels[label.upper()], OFFSET_LEN
+                            labels[label.upper()], OFFSET_LEN, isLui
                         )
                     )
             else:
@@ -812,11 +822,15 @@ def binary_to_signed_decimal(binString):
     if binString[0] != '1': return int(binString, 2)
     else: return -1 * ((int(binString, 2) ^ int('0b' + '1' * len(binString), 2)) + 1)
 
-def trim(binString, numBits):
+def trim(binString, numBits, isLui=False):
     '''Trims leading 0s so that binString is length numBits. 
     Will truncate least-significant bits if result length is too big.'''
 
     binString = binString.replace("0b", "")
+
+    if (isLui):
+        # Just truncate for LUI
+        return binString[0:17]
 
     if len(binString) < numBits:
         binString = (numBits - len(binString)) * '0' + binString
