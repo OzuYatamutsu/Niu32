@@ -86,6 +86,10 @@ TWO_STG_PSEUDO_OP = {"NAND": "NAND.2", "NOR": "NOR.2", "NXOR": "NXOR.2",
                      "LA": "LA.2", "LA.2": "LA.3", "LV": "LV.2", 
                      "PUSH": "PUSH.2", "POP": "POP.2"}
 
+IMMEDIATES = ["ADDI", "MLTI", "DIVI", "ANDI", "ORI", 
+              "XORI", "SULI", "SULI", "SSLI", "SURI", 
+              "SSRI", "LUI"]
+
 DIRECTIVES = [".NAME", ".ORIG", ".WORD"]
 
 ### Memory symbols
@@ -676,11 +680,11 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
             else:
                 unresolvedLabels[args[-1]].append(instrNum)
 
-            # Special cases: Jump + LUI instructions
+            # Special cases: Jump + immediate instructions
             if (op == "JMP"): 
                 unresolvedLabels[args[-1]][-1] = str(instrNum) + "J"
-            elif (op == "LUI"):
-                unresolvedLabels[args[-1]][-1] = str(instrNum) + "L"
+            elif (op in IMMEDIATES):
+                unresolvedLabels[args[-1]][-1] = str(instrNum) + "I"
 
             # ...and flag that we must resolve label later
             unresolvedMod = True
@@ -736,22 +740,16 @@ def resolve_all(asm, labels, uses):
     # TODO: Handle labels of the form <MEM>label</MEM> i.e. LA op
     for label in uses:
         for use in uses[label]:
-            if (type(use) is str):
-                # Special case!
-                if ("J" in use):
-                    # Handle jumps differently
-                    # TODO: complete
-                    use = int(use.replace("J", ""))
-                elif ("L" in use):
-                    # Handle LUIs differently
-                    use = int(use.replace("L", ""))
-                    asm[use] = asm[use].replace(
-                        label, '0' + trim(
-                            labels[label.upper()], OFFSET_LEN - 1
-                            )
+            if (type(use) is str and "I" in use):
+                # Handle immediates 
+                use = int(use.replace("I", ""))
+                asm[use] = asm[use].replace(
+                    label, trim(
+                            labels[label.upper()], OFFSET_LEN
                         )
+                    )
             else:
-                # Resolve offset
+                # Resolve offset for J and B-types
                 asm[use] = asm[use].replace(
                     label,
                     trim(
