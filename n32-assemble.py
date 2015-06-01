@@ -595,8 +595,7 @@ def convert_pseudo_op(op, args):
     elif (op == "RET"):
         op = "JAL"
         # Simple alias, we don't care about return location
-        args.append("$zero")
-        args.append("$ra")
+        args = ["$zero", "$ra"]
 
     return op, args
 
