@@ -73,7 +73,7 @@ OP1 = {"ALUI": "00000", "ADDI": "00001", "MLTI": "00010",
 OP2 = {"SUB": "00000", "ADD": "00001", "MLT": "00010", 
        "DIV": "00011", "NOT": "00100", "AND": "00101", 
        "OR": "00110", "XOR": "00111", "SUL": "01000", 
-       "SSL": "01001", "SUR": "01010", "SSR": "01010", 
+       "SSL": "01001", "SUR": "01010", "SSR": "01011", 
        "EQ": "10000", "NEQ": "10001", "LT": "10010", 
        "LEQ": "10011"}
 
@@ -377,7 +377,10 @@ def num_to_binary(numString, binLength):
     is needed first. The input number will be treated as a signed integer.'''
 
     if (is_binary(numString)):
-        return numString.replace("0b", "")
+        numString = numString.replace("0b", "")
+        if (len(numString) < binLength):
+            return ('0' * (binLength - len(numString))) + numString
+        else: return trim(numString, binLength, True)
     elif (is_decimal(numString)):
         return decimal_to_binary(int(numString), binLength)
     elif (is_hex(numString)):
@@ -822,13 +825,13 @@ def binary_to_signed_decimal(binString):
     if binString[0] != '1': return int(binString, 2)
     else: return -1 * ((int(binString, 2) ^ int('0b' + '1' * len(binString), 2)) + 1)
 
-def trim(binString, numBits, isLui=False):
+def trim(binString, numBits, truncate=False):
     '''Trims leading 0s so that binString is length numBits. 
     Will truncate least-significant bits if result length is too big.'''
 
     binString = binString.replace("0b", "")
 
-    if (isLui):
+    if (truncate):
         # Just truncate for LUI
         return binString[0:17]
 
