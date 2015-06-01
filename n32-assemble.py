@@ -574,6 +574,7 @@ def convert_pseudo_op(op, args):
         op = "ADD"
         # 0 + 0 => op0
         args.append("$zero")
+        args.append("$zero")
     elif (op == "BGT"):
         op = "BLT"
         # Swap args[1] and args[2]
