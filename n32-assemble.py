@@ -346,7 +346,7 @@ def get_instr(line):
 def is_label(line):
     '''Checks if the given line is a memory label.'''
 
-    return type(line) is not list and ((":" in line) 
+    return len(line) > 0 and type(line) is not list and ((":" in line) 
         or ((not is_hex(line)) and (not is_binary(line))  
         and (not is_decimal(line))))
 
@@ -573,7 +573,6 @@ def convert_pseudo_op(op, args):
     elif (op == "CLR"):
         op = "ADD"
         # 0 + 0 => op0
-        args.append("$zero")
         args.append("$zero")
     elif (op == "BGT"):
         op = "BLT"
