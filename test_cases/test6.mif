@@ -4,7 +4,7 @@ ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 CONTENT BEGIN
 -- @ 0x00000000 :    LV.1 $SP,BSTACK
-00000000 : b03affff;
+00000000 : b03bffff;
 -- @ 0x00000004 :    LV.2 $SP,BSTACK
 00000001 : 3779ffff;
 -- @ 0x00000008 :    ADDI $T0,$ZERO,1
@@ -40,7 +40,7 @@ CONTENT BEGIN
 -- @ 0x00000044 :    SUL $S0,$S0,$T0
 00000011 : 034ad008;
 -- @ 0x00000048 :    EQ $S0,$S0,$S1
-00000012 : 034cd010;
+00000012 : 035cd010;
 END;
 
 -- Note: This program was manually assembled
