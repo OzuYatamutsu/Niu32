@@ -701,7 +701,8 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
             # arg1 = $zero
             args.insert(1, "$zero")
         elif (op == "JAL"):
-            pass
+            # Offset is 17'b0
+            args.append(17*'0')
 
         # Convert op
         instr = instr + OP1[op]
