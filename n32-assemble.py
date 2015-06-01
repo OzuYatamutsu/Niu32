@@ -577,12 +577,12 @@ def convert_pseudo_op(op, args):
         args.append("$zero")
     elif (op == "BGT"):
         op = "BLT"
-        # Swap args[1] and args[2]
-        args[1], args[2] = args[2], args[1]
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "BGE"):
         op = "BLE"
-        # Swap args[2] and args[1]
-        args[1], args[2] = args[2], args[1]
+        # Swap args[0] and args[1]
+        args[0], args[1] = args[1], args[0]
     elif (op == "GOTO"):
         op = "BEQ"
         # Unconditional branch (0 == 0)
@@ -721,6 +721,10 @@ def instr_assemble(op, args, instrNum, unresolvedLabels):
     elif (op in OP2):
         # OP1 is ALUI
         instr = instr + OP1["ALUI"]
+
+        if (op == "NOT"):
+            # arg2 is $zero for NOT
+            args.append("$zero")
 
         # Convert arg1
         instr = instr + REGS[args[1]]
