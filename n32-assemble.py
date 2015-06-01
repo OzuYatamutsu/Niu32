@@ -521,7 +521,7 @@ def convert_pseudo_op(op, args):
             # XOR arg1, arg2, arg3
             # NOT arg1, arg1
             
-            op = ["NXOR", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
+            op = ["XOR", TWO_STG_PSEUDO_OP[op] + " " + ", ".join(args)]
         elif (op == "LA"):
             # LA arg1, memloc_imm is
 
